@@ -60,41 +60,45 @@ namespace WebShopProject.Controllers.Admin
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Active,Quantity,Price")] Product product)
         {
             ModelState.Remove("OrderItem");
-
+            ModelState.Remove("ProductImage");
             if (product.ProductCategory == null) ModelState.Remove("ProductCategory");
-            if (product.ImageName == null || 1 == 1)
-            {
-                ModelState.Remove("ProductImage");
-            }
-            else
-            {
-                if (ModelState.IsValid)
-                //{
-                //    _context.Database.SqlQuery(
-                //        "AddProductWithImage @ProductName, @ProductDescription, @ProductActive, @ProductQuantity, @ProductPrice, " +
-                //        "@FileName, @ImageName, @IsMainImage",
-                //        new SqlParameter("",product.Name),
-                //        new SqlParameter("", product.Description),
-                //        new SqlParameter("", product.Active),
-                //        new SqlParameter("", product.Quantity),
-                //        new SqlParameter("", product.Price),
-                        
-                //        new SqlParameter("", product.ImageName)
-                //        );
-
-                product.ProductImage.Add(new ProductImage()
-                {
-                    ProductId = product.Id,
-                    IsMainImage = true,
-                    Name = product.Name,
-                    FileName = "/images/products/" + product.Id.ToString() + "/"
-                });
-            }
 
             if (ModelState.IsValid)
             {
                 _context.Add(product);
+                
                 await _context.SaveChangesAsync();
+                //after adding product, product object should have inserted ID value == CONFIRMED
+                if (product.Id > 0 && HttpContext.Request.Form.Files.Count > 0)
+                {
+                    ProductImage productImage = new ProductImage();
+
+                    var imageFile = HttpContext.Request.Form.Files.FirstOrDefault();
+                    var uploadPath = Path.Combine("wwwroot", "images", "products", product.Id.ToString());
+                    if (!Directory.Exists(uploadPath))
+                    {
+                        Directory.CreateDirectory(uploadPath);
+                    }
+
+                    if (imageFile != null)
+                    {
+                        var fileName = Path.Combine(uploadPath, imageFile.FileName);
+                        using (var fileStream = new FileStream(fileName, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fileStream);
+                        }
+                        fileName = fileName.Replace("wwwroot\\", "/").Replace("\\", "/");
+                       
+                        productImage.FileName = fileName;
+                        productImage.IsMainImage = true;
+                        productImage.ProductId = product.Id;
+                        productImage.Name = imageFile.FileName;
+
+                        _context.Add(productImage);
+                        _context.SaveChanges();
+                    }
+
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(product);

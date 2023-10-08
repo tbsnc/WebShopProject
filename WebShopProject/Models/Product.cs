@@ -27,8 +27,6 @@ namespace WebShopProject.Models
         [NotMapped] 
         public bool UseDefaultImage { get; set; }
 
-        [NotMapped]
-        public string ImageName { get; set; }
 
         [ForeignKey("ProductId")]
         public virtual ICollection<ProductCategory> ProductCategory { get; set; }
