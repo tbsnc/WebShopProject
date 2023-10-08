@@ -24,6 +24,9 @@ namespace WebShopProject.Models
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
+        [NotMapped] 
+        public bool UseDefaultImage { get; set; }
+
         [ForeignKey("ProductId")]
         public virtual ICollection<ProductCategory> ProductCategory { get; set; }
 
