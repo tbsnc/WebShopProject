@@ -182,7 +182,7 @@ namespace WebShopProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductImages",
+                name: "ProductImage",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -194,9 +194,9 @@ namespace WebShopProject.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductImages", x => x.Id);
+                    table.PrimaryKey("PK_ProductImage", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductImages_Product_ProductId",
+                        name: "FK_ProductImage_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id");
@@ -228,8 +228,8 @@ namespace WebShopProject.Data.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductImages_ProductId",
-                table: "ProductImages",
+                name: "IX_ProductImage_ProductId",
+                table: "ProductImage",
                 column: "ProductId");
         }
 
@@ -243,7 +243,7 @@ namespace WebShopProject.Data.Migrations
                 name: "ProductCategory");
 
             migrationBuilder.DropTable(
-                name: "ProductImages");
+                name: "ProductImage");
 
             migrationBuilder.DropTable(
                 name: "Order");

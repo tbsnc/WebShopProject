@@ -12,8 +12,8 @@ using WebShopProject.Data;
 namespace WebShopProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231007234118_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231008141932_AddAdminAccount")]
+    partial class AddAdminAccount
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -495,7 +495,7 @@ namespace WebShopProject.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

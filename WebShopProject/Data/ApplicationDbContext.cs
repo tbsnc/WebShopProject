@@ -50,7 +50,7 @@ namespace WebShopProject.Data
 
         public DbSet<OrderItem> OrderItem { get; set; }
 
-        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ProductImage> ProductImage { get; set; }
 
     }
 }
