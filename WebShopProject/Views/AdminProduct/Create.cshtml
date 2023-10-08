@@ -24,7 +24,7 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    <input class="form-check-input" checked="checked" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
                 </label>
             </div>
             <div class="form-group">
@@ -34,25 +34,37 @@
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" type="number" class="form-control" />
+                <input asp-for="Price" type="number" min="1" step="any" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
                 
             </div>
             <div class="form-group">
                 <label class="control-label">Use default image</label>
-                <input asp-for="UseDefaultImage" type="checkbox" id="chkDefaultImage" onclick="CheckDefaultImage()" />
+                <input asp-for="UseDefaultImage" type="checkbox" id="chkDefaultImage" onclick="CheckDefault()" />
             </div>
 
             <div class="form-group" id="imageUpload" >
-                @*TODO IMAGE UPLOAD WHEN CREATING PRODUCT*@
+                <input type="file" id="productImage"  asp-for="ImageName" class="form-control" onchange="PicturePreview()" />
             </div>
 
+            <div class="form-group">
+                <label class="control-label">Upload without category</label>
+                <input type="checkbox" id="chkCategory" onclick="CheckDefault()" />
+            </div>
+
+            <div class="form-group" id="showCategory">
+               No categories in database. @*TODO category dropdown*@
+            </div>
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
 
         </form>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+        <img id="defaultProductImage" src="~/images/default.png" height="500"/>
     </div>
 </div>
 
@@ -61,11 +73,45 @@
 </div>
 @section scripts{
     <script>
-        function CheckDefaultImage(){
-            var checkBox = document.getElementById('chkDefaultImage');
-            var imageUpload = document.getElementById("imageUpload");
+        function PicturePreview() {
+            var preview = document.querySelector('#defaultProductImage');
+            
+            var isSelected = document.querySelector('#productImage') !== null;
 
-            if(checkBox.checked == true)
+            if(isSelected)
+            {
+                var productImage = document.querySelector('#productImage').files[0];
+            }
+            var reader = new FileReader();
+
+            reader.onloadend = function() {
+                preview.src = reader.result;
+            }
+            if(isSelected)
+            {
+                reader.readAsDataURL(productImage);
+            }else{
+                preview.src = "";
+            }
+
+            
+        }
+
+
+        function CheckDefault(){
+            var checkBoxImage = document.getElementById('chkDefaultImage');
+            var checkBoxCategory = document.getElementById('chkCategory');
+            
+            var imageUpload = document.getElementById('imageUpload');
+            var showCategory = document.getElementById('showCategory');
+
+            if (checkBoxCategory.checked == true) {
+                showCategory.style.display = "none";
+            } else {
+                showCategory.style.display = "block";
+            }
+
+            if(checkBoxImage.checked == true)
             {
                 imageUpload.style.display = "none";
             }else{

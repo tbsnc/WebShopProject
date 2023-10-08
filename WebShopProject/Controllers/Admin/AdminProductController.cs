@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using WebShopProject.Data;
 using WebShopProject.Models;
@@ -58,6 +59,38 @@ namespace WebShopProject.Controllers.Admin
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Active,Quantity,Price")] Product product)
         {
+            ModelState.Remove("OrderItem");
+
+            if (product.ProductCategory == null) ModelState.Remove("ProductCategory");
+            if (product.ImageName == null || 1 == 1)
+            {
+                ModelState.Remove("ProductImage");
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                //{
+                //    _context.Database.SqlQuery(
+                //        "AddProductWithImage @ProductName, @ProductDescription, @ProductActive, @ProductQuantity, @ProductPrice, " +
+                //        "@FileName, @ImageName, @IsMainImage",
+                //        new SqlParameter("",product.Name),
+                //        new SqlParameter("", product.Description),
+                //        new SqlParameter("", product.Active),
+                //        new SqlParameter("", product.Quantity),
+                //        new SqlParameter("", product.Price),
+                        
+                //        new SqlParameter("", product.ImageName)
+                //        );
+
+                product.ProductImage.Add(new ProductImage()
+                {
+                    ProductId = product.Id,
+                    IsMainImage = true,
+                    Name = product.Name,
+                    FileName = "/images/products/" + product.Id.ToString() + "/"
+                });
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(product);

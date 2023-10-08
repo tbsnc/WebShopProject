@@ -7,6 +7,8 @@ namespace WebShopProject.Models
         [Key]
         public int Id { get; set; }
 
+        public int ProductId { get; set; }
+
         [Required]
         [StringLength(200,MinimumLength = 2)]
         public string Name { get; set; }
