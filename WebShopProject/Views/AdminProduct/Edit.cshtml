@@ -12,7 +12,9 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <input type="hidden" asp-for="Id" />
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -42,6 +44,29 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+        @{
+            if(Model.ProductImage != null)
+            {
+                foreach(var image in Model.ProductImage)
+                {
+                    <div class="col-md-2">
+                        <img src="@image.FileName" height="100"/>
+                    </div>
+                }
+            }
+            else
+            {
+                <img id="defaultProductImage" src="~/images/default.png" height="500" />
+            }
+         }
+         
+    </div>
+    </hr>
+    <div>
+        <a class="btn btn-primary" asp-controller="AdminProductImage" asp-action="Index" asp-route-id="@Model.Id">Edit images</a>
     </div>
 </div>
 

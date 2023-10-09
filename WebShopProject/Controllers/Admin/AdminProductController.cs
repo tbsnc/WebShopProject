@@ -66,43 +66,26 @@ namespace WebShopProject.Controllers.Admin
             if (ModelState.IsValid)
             {
                 _context.Add(product);
-                
+
                 await _context.SaveChangesAsync();
                 //after adding product, product object should have inserted ID value == CONFIRMED
                 if (product.Id > 0 && HttpContext.Request.Form.Files.Count > 0)
                 {
-                    ProductImage productImage = new ProductImage();
-
                     var imageFile = HttpContext.Request.Form.Files.FirstOrDefault();
-                    var uploadPath = Path.Combine("wwwroot", "images", "products", product.Id.ToString());
-                    if (!Directory.Exists(uploadPath))
-                    {
-                        Directory.CreateDirectory(uploadPath);
-                    }
 
-                    if (imageFile != null)
-                    {
-                        var fileName = Path.Combine(uploadPath, imageFile.FileName);
-                        using (var fileStream = new FileStream(fileName, FileMode.Create))
-                        {
-                            await imageFile.CopyToAsync(fileStream);
-                        }
-                        fileName = fileName.Replace("wwwroot\\", "/").Replace("\\", "/");
-                       
-                        productImage.FileName = fileName;
-                        productImage.IsMainImage = true;
-                        productImage.ProductId = product.Id;
-                        productImage.Name = imageFile.FileName;
-
-                        _context.Add(productImage);
-                        _context.SaveChanges();
-                    }
-
+                    ProductImage productImage =  await FnHelper.CreateProductImage(imageFile, product.Id);
+                    
+                    _context.Add(productImage);
+                    _context.SaveChanges();
                 }
+            
+
+                
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
         }
+    
 
         // GET: AdminProduct/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -116,6 +99,13 @@ namespace WebShopProject.Controllers.Admin
             if (product == null)
             {
                 return NotFound();
+            }
+            foreach (var productImage in _context.ProductImage.ToList())
+            {
+                if(product.Id == productImage.ProductId)
+                {
+                    product.ProductImage.Add(productImage);
+                }
             }
             return View(product);
         }
@@ -131,6 +121,10 @@ namespace WebShopProject.Controllers.Admin
             {
                 return NotFound();
             }
+
+            ModelState.Remove("OrderItem");
+            ModelState.Remove("ProductImage");
+            ModelState.Remove("ProductCategory");
 
             if (ModelState.IsValid)
             {
