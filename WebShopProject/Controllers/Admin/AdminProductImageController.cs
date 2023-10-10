@@ -33,7 +33,7 @@ namespace WebShopProject.Controllers.Admin
                 }else
                 {
                     ViewBag.ProductId = Id;
-                    return View(new List<ProductImage>());
+                    return View(new List<ProductImage>() );
                 }
             }
             else
@@ -65,10 +65,13 @@ namespace WebShopProject.Controllers.Admin
             return View(productImage);
         }
 
+
         // GET: AdminProductImage/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            return View();
+            if (id == null || _context.Product.Count(x => x.Id == id) == 0) { return RedirectToAction("AdminProduct", "Index"); }
+
+            return View(new ProductImage() { ProductId = (int)id});
         }
 
         // POST: AdminProductImage/Create
@@ -76,13 +79,34 @@ namespace WebShopProject.Controllers.Admin
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProductId,Name,IsMainImage,FileName")] ProductImage productImage)
+        public async Task<IActionResult> Create( ProductImage productImage)
         {
+            if (productImage.ProductId == null || productImage.ProductId == 0) return NotFound();
+
+            if (_context.Product.Any(x => x.Id == productImage.ProductId))
+            {
+                productImage.ProductName = _context.Product.Where(x => x.Id == productImage.ProductId).FirstOrDefault().Name;
+                ModelState.Remove("ProductName");
+            }
+            ModelState.Remove("FileName");
+            ModelState.Remove("Id");
             if (ModelState.IsValid)
             {
+                if (HttpContext.Request.Form.Files.Count > 0)
+                {
+                    var imageFile = HttpContext.Request.Form.Files[0];
+                    productImage = await FnHelper.CreateProductImage(imageFile, productImage.ProductId, productImage.IsMainImage);
+                }else
+                {
+                    return NotFound(); //TODO SMT BETTER MAYBE
+                }
+                
+
+                
+                productImage.Id = 0;
                 _context.Add(productImage);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {id = productImage.ProductId});
             }
             return View(productImage);
         }
