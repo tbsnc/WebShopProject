@@ -54,7 +54,25 @@
             </div>
 
             <div class="form-group" id="showCategory">
-               No categories in database. @*TODO category dropdown*@
+                @if(Model.Category != null)
+                {
+
+                    @*TODO category dropdown*@
+                    
+                    
+                    <select class="form-select" name="SelectedCategory" aria-label="Select category">
+                        <option selected>Category</option>
+                        @foreach(var item in Model.Category)
+                        {
+                            <option value="@item.Id">@item.Name</option>    
+                        }
+
+                        
+                    </select>
+                }else
+                {
+                  <div>No categories in database.</div> 
+                }
             </div>
 
             <div class="form-group">

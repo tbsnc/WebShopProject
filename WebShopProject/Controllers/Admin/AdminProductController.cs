@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
@@ -11,6 +13,7 @@ using WebShopProject.Models;
 
 namespace WebShopProject.Controllers.Admin
 {
+    [Authorize(Roles = "Admin")]
     public class AdminProductController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -49,7 +52,13 @@ namespace WebShopProject.Controllers.Admin
         // GET: AdminProduct/Create
         public IActionResult Create()
         {
-            return View();
+            
+            Product product = new Product();
+            if (_context.ProductCategory != null)
+            {
+                product.Category = _context.Category.ToList();
+            }
+            return View(product);
         }
 
         // POST: AdminProduct/Create
@@ -61,7 +70,9 @@ namespace WebShopProject.Controllers.Admin
         {
             ModelState.Remove("OrderItem");
             ModelState.Remove("ProductImage");
-            if (product.ProductCategory == null) ModelState.Remove("ProductCategory");
+            ModelState.Remove("ProductCategory");
+            ModelState.Remove("Category");
+           
 
             if (ModelState.IsValid)
             {
@@ -78,11 +89,31 @@ namespace WebShopProject.Controllers.Admin
                     _context.Add(productImage);
                     _context.SaveChanges();
                 }
-            
 
-                
+                if (product.Id > 0 && Request.Form["SelectedCategory"].Count > 0)
+                {
+                    if (int.TryParse(Request.Form["SelectedCategory"], out var result))
+                    {
+                        int categoryId = int.Parse(Request.Form["SelectedCategory"]);
+                        ProductCategory productCategory = new ProductCategory()
+                        {
+                            CategoryId = categoryId,
+                            CategoryName = _context.Category.FirstOrDefault(x => x.Id == categoryId).Name,
+                            ProductId = product.Id,
+                            ProductName = product.Name
+
+                        };
+
+                        _context.Add(productCategory);
+                        _context.SaveChanges();
+                    }
+                }
+
+
+
                 return RedirectToAction(nameof(Index));
             }
+            //ovdje ne bi trebalo dolaziti, model state not valid TODO.
             return View(product);
         }
     
