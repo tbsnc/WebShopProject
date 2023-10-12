@@ -18,7 +18,18 @@ namespace WebShopProject.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            List<Product> products = new List<Product>();
+            if(_context.Product != null)
+            {
+                products = _context.Product.ToList();
+            }
+
+            foreach(Product product in products)
+            {
+                product.ProductImage = _context.ProductImage != null ? _context.ProductImage.Where(x => x.ProductId == product.Id).ToList() : null; 
+            }
+
+            return View(products.Count > 0 ? products : new Product());
         }
 
         public IActionResult Privacy()

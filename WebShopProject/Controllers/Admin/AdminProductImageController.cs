@@ -194,6 +194,10 @@ namespace WebShopProject.Controllers.Admin
             var productImage = await _context.ProductImage.FindAsync(id);
             if (productImage != null)
             {
+
+
+                var fileName = "wwwroot" + productImage.FileName.Replace("/", "\\");
+                System.IO.File.Delete(fileName);
                 _context.ProductImage.Remove(productImage);
             }
             
