@@ -23,15 +23,42 @@ namespace WebShopProject.Controllers
             {
                 products = _context.Product.ToList();
             }
+            
+            
 
             foreach(Product product in products)
             {
-                product.ProductImage = _context.ProductImage != null ? _context.ProductImage.Where(x => x.ProductId == product.Id).ToList() : null; 
+                product.ProductImage = _context.ProductImage != null ? _context.ProductImage.Where(x => x.ProductId == product.Id).ToList() : null;
+                product.ProductCategory = _context.ProductCategory != null ? _context.ProductCategory.Where(x => x.ProductId == product.Id).ToList() : null;
+               
             }
+
+            ViewBag.Category = _context.Category != null ? _context.Category.ToList() : null;
 
             return View(products.Count > 0 ? products : new Product());
         }
+        public IActionResult FilterByCategory(int id)
+        {
+            if(_context.Product == null) RedirectToAction("Index");
 
+            List<Product> productsFiltered = new List<Product>();
+            
+            if (_context.Category != null)
+            {
+                foreach(Product product in _context.Product.Where(x => x.Active == true)) 
+                {
+                    if (_context.ProductCategory.Any(x => x.ProductId == product.Id && x.CategoryId == id))
+                    {
+                        product.ProductImage = _context.ProductImage.Where(x => x.ProductId == product.Id).ToList();
+                        product.ProductCategory = _context.ProductCategory.Where(x => x.ProductId == product.Id).ToList();
+                        productsFiltered.Add(product);
+                    }
+                }
+            }
+            
+            ViewBag.Category = _context.Category != null ? _context.Category.ToList() : null;
+            return View("Index", productsFiltered);
+        }
         public IActionResult Privacy()
         {
             return View();

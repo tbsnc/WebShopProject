@@ -71,5 +71,32 @@ namespace WebShopProject.Controllers
             
             return RedirectToAction("Index");
         }
+        [HttpPost]
+        public IActionResult RemoveFromCart(int productId)
+        {
+            List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(SessionKeyName);
+
+            if (cart != null && cart.Count > 0)
+            {
+                cart.Remove(cart.FirstOrDefault(x => x.Product.Id == productId));
+            }
+            HttpContext.Session.SetObjectAsJson(SessionKeyName, cart);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult ChangeCartItemQuantity(int productId, int quantity)
+        {
+            List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(SessionKeyName);
+
+            if (cart != null)
+            {
+                if (cart.Any(x => x.Product.Id == productId))
+                {
+                    cart.FirstOrDefault(x => x.Product.Id == productId).Quantity = quantity;
+                }
+            }
+            HttpContext.Session.SetObjectAsJson(SessionKeyName, cart);
+            return RedirectToAction("Index");
+        }
     }
 }
