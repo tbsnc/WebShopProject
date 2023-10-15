@@ -41,7 +41,32 @@ namespace WebShopProject.Data.Migrations
                 new Product { Name = "Yamaha  C40II",Id=5, 
                     ProductCategory = new List<ProductCategory>(){ new ProductCategory() { CategoryId=3, CategoryName = "Acoustic" } },
                     Description= "Nylon-string Acoustic Guitar with Spruce-Top, Meranti Back and Sides, Nato Neck, and Rosewood Fingerboard and Bridge - Natural",
-                    ProductImage = new List < ProductImage >() { new ProductImage { Name = "Yamaha C40II", FileName = "/images/products/5/yamahaC40II.jpeg" } }, Quantity = 5, Price = 600M}
+                    ProductImage = new List < ProductImage >() { new ProductImage { Name = "Yamaha C40II", FileName = "/images/products/5/yamahaC40II.jpeg" } }, Quantity = 5, Price = 600M},
+
+                new Product { Name = "Gibson Acoustic 1942 Banner J-45",Id=6,
+                    ProductCategory = new List<ProductCategory>(){ new ProductCategory() { CategoryId=3, CategoryName = "Acoustic" } },
+                    Description= "6-string Acoustic Guitar with Red Spruce Top, Mahogany Back and Sides, Mahogany Neck, a Rosewood Fingerboard - Vintage Sunburst",
+                    ProductImage = new List < ProductImage >() { new ProductImage { Name = "Gibson Acoustic", FileName = "/images/products/6/GibsonAcoustic1.jpg" } }, Quantity = 7, Price = 3999.99M},
+
+                new Product { Name = "B.C. Rich Stealth Exotic Legacy",Id=7,
+                    ProductCategory = new List<ProductCategory>(){ new ProductCategory() { CategoryId=1, CategoryName = "Electric" } },
+                    Description= "6-string Solidbody Electric Guitar, Left-handed, with Maple Top, Alder Body, Maple Neck, Ebony Fingerboard, and 2 Humbucking Pickups - Natural",
+                    ProductImage = new List < ProductImage >() { new ProductImage { Name = "B.C. Rich", FileName = "/images/products/7/B.C.Rich.jpg" } }, Quantity = 1, Price = 1599.99M},
+                 
+                new Product { Name = "Fender American Ultra Jazz Bass",Id=8,
+                    ProductCategory = new List<ProductCategory>(){ new ProductCategory() { CategoryId=4, CategoryName = "Bass" } },
+                    Description= "4-string Electric Bass with Alder Body, Maple Neck, Maple Fingerboard, 2 Single-coil Pickups, and Active Electronics - Texas Tea",
+                    ProductImage = new List < ProductImage >() { new ProductImage { Name = "Femder American Bass", FileName = "/images/products/8/Fender-American-Ultra-Jazz-Bass.jpg" } }, Quantity = 35, Price = 2249.99M},
+
+                new Product { Name = "Gibson SG Standard Bass",Id=9,
+                    ProductCategory = new List<ProductCategory>(){ new ProductCategory() { CategoryId=4, CategoryName = "Bass" } },
+                    Description= "4-string Electric Bass with Mahogany Body, Mahogany Neck, Rosewood Fingerboard, and 2 Humbucking Pickups - Heritage Cherry",
+                    ProductImage = new List < ProductImage >() { new ProductImage { Name = "Gibson SG Standard", FileName = "/images/products/9/GibsonSGBass.jpg" } }, Quantity = 12, Price = 1999.99M},
+
+                new Product { Name = "Lanikai QM-BLCET Tenor Ukulele",Id=10,
+                    ProductCategory = new List<ProductCategory>(){ new ProductCategory() { CategoryId=2, CategoryName = "Ukulele" } },
+                    Description= "Tenor Cutaway Ukulele with Maple Body, Rosewood Fingerboard, and Kula Electronics - Ble Stain",
+                    ProductImage = new List < ProductImage >() { new ProductImage { Name = "Lanikai QM-BLCET", FileName = "/images/products/10/lanikai_qmblcet_.jpg" } }, Quantity = 5, Price = 415M}
 
             };
 
