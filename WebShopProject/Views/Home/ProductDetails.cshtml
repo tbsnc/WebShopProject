@@ -1,10 +1,10 @@
 ﻿@model WebShopProject.Models.Product
 
 @{
-    ViewData["Title"] = "ProductDetails";
+    ViewData["Title"] = "Product Details";
 }
 
-<h1>ProductDetails</h1>
+<h1>Product Details</h1>
 
 <div>
     <h4>Product</h4>
@@ -22,27 +22,27 @@
                 <dt class = "col-sm-2">
                     @Html.DisplayNameFor(model => model.Description)
                 </dt>
-                <dd class = "col-sm-10">
+                <dd class = "col-sm-12">
                     @Html.DisplayFor(model => model.Description)
                 </dd>
                 <dt class = "col-sm-2">
                     @Html.DisplayNameFor(model => model.Quantity)
                 </dt>
-                <dd class = "col-sm-10">
+                <dd class = "col-sm-12">
                     @Html.DisplayFor(model => model.Quantity)
                 </dd>
                 <dt class = "col-sm-2">
                     @Html.DisplayNameFor(model => model.Price)
                 </dt>
-                <dd class = "col-sm-10">
+                <dd class = "col-sm-12">
                     @Html.DisplayFor(model => model.Price)
                 </dd>
             </dl>
         </div>
-        <div class="col-sm-2"></div>
+     
         @if (Model.ProductImage != null)
         {
-            <div class="col-sm-4">
+            <div class="col-sm-4 px-5">
                 <div id="pictureCarousel" class="carousel slide">
                     <ol class="carousel-indicators">
                         <li data-bs-target="#pictureCarousel" data-bs-slide-to="0" class="active"></li>
@@ -56,26 +56,39 @@
                     </ol>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <div class="image-container">
+                            <div class="img-thumbnail">
                                 @if (Model.ProductImage != null)
                                 {
-                                    <img src="@Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault().FileName" height="200" class="img-fluid"/>
-                                    @Model.ProductImage.Remove(Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault());
+                                    <img src="@Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault().FileName"  class="img-fluid img-thumbnail"/>
+                                    
                                 }
                             </div>
                         </div>
+                        @Model.ProductImage.Remove(Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault());
                         @foreach (var item in Model.ProductImage)
                         {
                             <div class="carousel-item">
-                                <div class="image-container">
-                            <img src="@item.FileName" class="img-fluid"/>
-                        </div>
-                    </div>
-                }
+                                <div class="img-thumbnail">
+                                    <img src="@item.FileName" class="img-fluid"/>
+                                </div>
+                            </div>
+                        }
                 </div>
+                    <a data-bs-target="#pictureCarousel" class="carousel-control-prev" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </a>
+                    <a data-bs-target="#pictureCarousel" class="carousel-control-next" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </a>
             </div>
         </div>
-        }else{/*default image*/}
+        }
+        else
+        {
+            <div class="image-container"> 
+                <img src="~/images/defauult.png" class="img-fluid" />
+            </div>
+        }
    </div>
 </div>
 <div>
