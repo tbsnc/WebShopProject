@@ -59,6 +59,22 @@ namespace WebShopProject.Controllers
             ViewBag.Category = _context.Category != null ? _context.Category.ToList() : null;
             return View("Index", productsFiltered);
         }
+
+        public IActionResult ProductDetails(int? id)
+        {
+            if(id  == null) RedirectToAction("Index");
+
+            Product product = _context.Product != null ? _context.Product.Where(x => x.Id == id).FirstOrDefault() : null;
+
+            if (product != null)
+            {
+                product.ProductImage = _context.ProductImage.Where(x => x.ProductId == id).ToList();
+            }
+
+            return View(product);
+        }
+
+
         public IActionResult Privacy()
         {
             return View();

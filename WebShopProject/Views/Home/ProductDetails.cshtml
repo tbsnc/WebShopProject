@@ -1,0 +1,83 @@
+﻿@model WebShopProject.Models.Product
+
+@{
+    ViewData["Title"] = "ProductDetails";
+}
+
+<h1>ProductDetails</h1>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+
+    <div class="row">
+        <div class="col-sm-4">
+            <dl class="row">
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Quantity)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-sm-2"></div>
+        @if (Model.ProductImage != null)
+        {
+            <div class="col-sm-4">
+                <div id="pictureCarousel" class="carousel slide">
+                    <ol class="carousel-indicators">
+                        <li data-bs-target="#pictureCarousel" data-bs-slide-to="0" class="active"></li>
+                        @if(Model.ProductImage.Count > 1)
+                        {
+                            for(int i = 1; i< Model.ProductImage.Count;i++)
+                            {
+                                <li data-bs-target="#pictureCarousel" data-bs-slide-to="@i"></li>
+                            }
+                        }
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="image-container">
+                                @if (Model.ProductImage != null)
+                                {
+                                    <img src="@Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault().FileName" height="200" class="img-fluid"/>
+                                    @Model.ProductImage.Remove(Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault());
+                                }
+                            </div>
+                        </div>
+                        @foreach (var item in Model.ProductImage)
+                        {
+                            <div class="carousel-item">
+                                <div class="image-container">
+                            <img src="@item.FileName" class="img-fluid"/>
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+        }else{/*default image*/}
+   </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

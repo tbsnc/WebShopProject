@@ -20,3 +20,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.image-container{
+    width: 350px;
+    height: 500px;
+}
+
+.image-container img{
+    width: 100%;
+    height: 100%;
+}
