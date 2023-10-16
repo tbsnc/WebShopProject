@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebShopProject.Data;
 using WebShopProject.Models;
@@ -30,7 +31,12 @@ namespace WebShopProject.Controllers
             {
                 product.ProductImage = _context.ProductImage != null ? _context.ProductImage.Where(x => x.ProductId == product.Id).ToList() : null;
                 product.ProductCategory = _context.ProductCategory != null ? _context.ProductCategory.Where(x => x.ProductId == product.Id).ToList() : null;
-               
+                if (product.Description != null && product.Description.Length > 75)
+                {
+                
+
+                    product.Description = product.Description.Truncate(75);
+                }
             }
 
             ViewBag.Category = _context.Category != null ? _context.Category.ToList() : null;

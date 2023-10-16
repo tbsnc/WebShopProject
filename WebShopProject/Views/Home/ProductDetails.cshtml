@@ -4,10 +4,9 @@
     ViewData["Title"] = "Product Details";
 }
 
-<h1>Product Details</h1>
+<h1>Details</h1>
 
 <div>
-    <h4>Product</h4>
     <hr />
 
     <div class="row">
@@ -37,6 +36,7 @@
                 <dd class = "col-sm-12">
                     @Html.DisplayFor(model => model.Price)
                 </dd>
+                
             </dl>
         </div>
      
@@ -91,6 +91,8 @@
         }
    </div>
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="mb-5">
+    <a class="btn btn-lg btn-success " value="" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id">Add to cart</a>
+
+    <a class="btn btn-lg btn-dark" asp-action="Index">Back to Products</a>
 </div>
