@@ -1,5 +1,6 @@
 ﻿@model WebShopProject.Models.Product
-
+@using WebShopProject.Extensions
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpcontextaccessor
 @{
     ViewData["Title"] = "Product Details";
 }
@@ -91,8 +92,17 @@
         }
    </div>
 </div>
-<div class="mb-5">
-    <a class="btn btn-lg btn-success " value="" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id">Add to cart</a>
-
+<div>
+    <form method="post" asp-controller="Cart" asp-action="AddToCart">
+        <input type="hidden" value="@Model.Id" name="productId"/>
+        <input type="submit" value="Add to cart" class="btn btn-lg btn-success"  />
+    </form>
     <a class="btn btn-lg btn-dark" asp-action="Index">Back to Products</a>
+    @{
+        var cart = httpcontextaccessor.HttpContext.Session.GetObjectFromJson<List<CartItem>>("_cart");
+    if (cart != null)
+    {
+        <a class="btn btn-lg btn-warning" asp-controller="Cart" asp-action="Index">Back to Cart</a>    
+    }
+    }
 </div>

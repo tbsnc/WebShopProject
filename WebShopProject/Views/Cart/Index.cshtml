@@ -27,20 +27,21 @@ else
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Total</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach(var item in Model)
             {
-                <tr>
+                <tr class="align-middle">
+                   
+
                     <td>
-                        <form method="post" asp-controller="Cart" asp-action="RemoveFromCart">
-                            <input type="hidden" name="productId" value="@item.Product.Id"/>
-                            <input type="submit" class="btn btn-danger btn-sm" value="Remove"/>
-                        </form>
+                        <a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Product.Id" style="text-decoration:none; color:inherit">@item.Product.Name</a>
                     </td>
-                    <td>@item.Product.Name</td>
+
                     <td>
+                        <a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Product.Id">
                         @if(item.Product.ProductImage != null)
                         {
                             <img src="@item.Product.ProductImage.FirstOrDefault(x => x.IsMainImage == true).FileName" height="100"/>
@@ -49,7 +50,9 @@ else
                         {
                             <img src="~/images/default.png" height="100"/>
                         }
+                        </a>
                     </td>
+                  
                     <td>@item.Product.Price.ToString("0.00")</td>
                     <td>
                         <form method="post" asp-controller="Cart" asp-action="ChangeCartItemQuantity">
@@ -58,10 +61,20 @@ else
                             <input type="submit" class="btn btn-info btn-sm" value="Change"/>
                         </form>
                     </td>
-                    <td colspan="4" class="text-right">Total:</td>
+                    <td>Total:</td>
                     <td>@Model.Sum(x => x.PricePerProduct).ToString("0.00") €</td>
+                    <td>
+                        <form method="post" asp-controller="Cart" asp-action="RemoveFromCart">
+                            <input type="hidden" name="productId" value="@item.Product.Id" />
+                            <input type="submit" class="btn btn-danger btn-sm" value="Remove" />
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
+        
     </table>
+    <div>
+        <a class="btn btn-lg btn-success" asp-controller="Home" asp-action="Order">Order products</a>
+    </div>
 }

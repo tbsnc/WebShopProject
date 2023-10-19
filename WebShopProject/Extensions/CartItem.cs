@@ -6,7 +6,7 @@ namespace WebShopProject.Extensions
     {
         public Product Product { get; set; }
 
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         public decimal PricePerProduct { get; set; }
         public decimal GetTotalPrice()

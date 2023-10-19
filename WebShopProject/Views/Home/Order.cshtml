@@ -1,0 +1,60 @@
+﻿@model List<WebShopProject.Extensions.CartItem>
+
+
+<div class="text-center">
+    <h1 class="display-4">Cart items</h1>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Product</th>
+            <th></th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="align-middle">
+                <td>
+                    <a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Product.Id" style="text-decoration:none; color:inherit">
+                        @item.Product.Name
+
+                    </a>
+                </td>
+                <td>
+                    <a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Product.Id">
+                        @if (item.Product.ProductImage != null)
+                        {
+                            <img src="@item.Product.ProductImage.FirstOrDefault(x => x.IsMainImage == true).FileName" height="100" />
+                        }
+                        else
+                        {
+                            <img src="~/images/default.png" height="100" />
+                        }
+                    </a>
+                </td>
+                <td>@item.Product.Price.ToString("0.00")</td>
+                <td>
+                    <form method="post" asp-controller="Cart" asp-action="ChangeCartItemQuantity">
+                        <input type="hidden" name="productId" value="@item.Product.Id" />
+                        <input type="number" placeholder="@item.Quantity" name="quantity" value="@item.Quantity" />
+                        <input type="submit" class="btn btn-info btn-sm" value="Change" />
+                    </form>
+                </td>
+                <td>Total:</td>
+                <td>@Model.Sum(x => x.PricePerProduct).ToString("0.00") €</td>
+                <td scope="row">
+                    <form method="post" asp-controller="Cart" asp-action="RemoveFromCart">
+                        <input type="hidden" name="productId" value="@item.Product.Id" />
+                        <input type="submit" class="btn btn-danger btn-sm" value="Remove" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
