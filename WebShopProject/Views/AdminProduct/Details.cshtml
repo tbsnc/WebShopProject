@@ -42,7 +42,9 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="row">
+    <div class="d-inline-flex">
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> 
+        <a class="btn btn-dark ms-2" asp-action="Index">Back to List</a>
+    </div>
 </div>

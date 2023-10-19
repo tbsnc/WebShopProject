@@ -23,7 +23,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="align-middle">
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -34,12 +34,15 @@
                 <img src="@item.FileName" height="50" width="50"/>
             </td>
             <td>
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
-<div class="row col-sm-2">
-    <a class="btn btn-success" asp-action="Create" asp-route-id="@ViewBag.ProductId">Create New</a>
+<div class="row mt-2">
+    <div class="d-inline-flex">
+        <a class="btn btn-success" asp-action="Create" asp-route-id="@ViewBag.ProductId">Create New</a>
+        <a class="btn btn-dark ms-2" asp-controller="AdminProduct" asp-action="Edit" asp-route-id="@Model.FirstOrDefault().ProductId">Back to edit</a>
+    </div>
 </div>
