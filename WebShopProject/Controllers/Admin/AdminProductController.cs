@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,9 +27,22 @@ namespace WebShopProject.Controllers.Admin
         // GET: AdminProduct
         public async Task<IActionResult> Index()
         {
-              return _context.Product != null ? 
-                          View(await _context.Product.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Product'  is null.");
+            List<Product> products = _context.Product.ToList();
+
+            if (products == null) return View("Index",new List<Product>());
+
+            foreach (var item in products)
+            {
+                item.ProductImage = _context.ProductImage.Where(x => x.ProductId == item.Id).ToList();
+                item.ProductCategory = _context.ProductCategory.Where(x => x.ProductId == item.Id).ToList();
+                if (item.Description.Length > 50)
+                {
+                    item.Description = item.Description.Truncate(50);
+                }
+            }
+
+
+            return View(products);
         }
 
         // GET: AdminProduct/Details/5
@@ -156,7 +170,7 @@ namespace WebShopProject.Controllers.Admin
             ModelState.Remove("OrderItem");
             ModelState.Remove("ProductImage");
             ModelState.Remove("ProductCategory");
-
+            ModelState.Remove("Category");
             if (ModelState.IsValid)
             {
                 try

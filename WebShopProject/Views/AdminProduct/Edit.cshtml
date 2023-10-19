@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form  asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <input type="hidden" asp-for="Id" />
@@ -41,36 +41,70 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input class="btn  btn-primary mt-3" href="#" type="submit" value="Save" />
             </div>
         </form>
     </div>
     <div class="col-md-2"></div>
-    <div class="col-md-4">
-        @{
-            if(Model.ProductImage != null)
-            {
-                foreach(var image in Model.ProductImage)
-                {
-                    <div class="col-md-2">
-                        <img src="@image.FileName" height="100"/>
+    <div class="col-lg-6">
+        @if (Model.ProductImage != null)
+        {
+            <div class="col-sm-4">
+                <div id="pictureCarousel" class="carousel slide">
+                    <ol class="carousel-indicators">
+                        <li data-bs-target="#pictureCarousel" data-bs-slide-to="0" class="active"></li>
+                        @if (Model.ProductImage.Count > 1)
+                        {
+                            for (int i = 1; i < Model.ProductImage.Count; i++)
+                            {
+                                <li data-bs-target="#pictureCarousel" data-bs-slide-to="@i"></li>
+                            }
+                        }
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="img-thumbnail">
+                                @if (Model.ProductImage != null)
+                                {
+                                    <img src="@Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault().FileName" class="img-fluid img-thumbnail" />
+
+                                }
+                            </div>
+                        </div>
+                        @Model.ProductImage.Remove(Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault());
+                        @foreach (var item in Model.ProductImage)
+                        {
+                            <div class="carousel-item">
+                                <div class="img-thumbnail">
+                                    <img src="@item.FileName" class="img-fluid" />
+                                </div>
+                            </div>
+                        }
                     </div>
-                }
-            }
-            else
-            {
-                <img id="defaultProductImage" src="~/images/default.png" height="500" />
-            }
-         }
+                    <a data-bs-target="#pictureCarousel" class="carousel-control-prev" role="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </a>
+                    <a data-bs-target="#pictureCarousel" class="carousel-control-next" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="image-container">
+                <img src="~/images/defauult.png" class="img-fluid" />
+            </div>
+        }
          
     </div>
-    </hr>
+  
     <div>
-        <a class="btn btn-primary" asp-controller="AdminProductImage" asp-action="Index" asp-route-id="@Model.Id">Edit images</a>
+        <a class="btn btn-primary mt-3" asp-controller="AdminProductImage" asp-action="Index" asp-route-id="@Model.Id">Edit images</a>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-sm btn-dark mt-3" asp-action="Index">Back to List</a>
 </div>
 
