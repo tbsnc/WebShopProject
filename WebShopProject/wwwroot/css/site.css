@@ -36,3 +36,8 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 }
+
+input.checkbox-lg{
+    width:25px;
+    height:25px;
+}

@@ -1,60 +1,204 @@
 ﻿@model List<WebShopProject.Extensions.CartItem>
 
+<div class="container">
+    <div class="row">
+        <div class="text-center">
+            <h1 class="display-4">Cart items</h1>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th></th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="align-middle">
+                        <td>
+                            <a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Product.Id" style="text-decoration:none; color:inherit">
+                                @item.Product.Name
 
-<div class="text-center">
-    <h1 class="display-4">Cart items</h1>
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Product</th>
-            <th></th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Product.Id">
+                                @if (item.Product.ProductImage != null)
+                                {
+                                    <img src="@item.Product.ProductImage.FirstOrDefault(x => x.IsMainImage == true).FileName" height="100" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/default.png" height="100" />
+                                }
+                            </a>
+                        </td>
+                      
+                        <td>
+                            <form method="post" asp-controller="Cart" asp-action="ChangeCartItemQuantity">
+                                <input type="hidden" name="productId" value="@item.Product.Id" />
+                                <input type="number" placeholder="@item.Quantity" name="quantity" value="@item.Quantity" />
+                                <input type="submit" class="btn btn-info btn-sm" value="Change" />
+                            </form>
+                        </td>
+                        <td>Total:</td>
+                        <td>@item.GetTotalPrice().ToString("0.00") €</td>
+                        <td scope="row">
+                            <form method="post" asp-controller="Cart" asp-action="RemoveFromCart">
+                                <input type="hidden" name="productId" value="@item.Product.Id" />
+                                <input type="submit" class="btn btn-danger btn-sm" value="Remove" />
+                            </form>
+                        </td>
+                    </tr>
+                } 
+            </tbody>
+        </table>
+        <div class="row">
+            <span class="border border-warning col-sm-2">Total price: @Model.Sum(x => x.GetTotalPrice()).ToString("0.00") € </span>
+        </div>
+    </div>
+    <div class="row mt-3">
+        @foreach(var item in ViewBag.Error)
         {
-            <tr class="align-middle">
-                <td>
-                    <a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Product.Id" style="text-decoration:none; color:inherit">
-                        @item.Product.Name
-
-                    </a>
-                </td>
-                <td>
-                    <a asp-controller="Home" asp-action="ProductDetails" asp-route-id="@item.Product.Id">
-                        @if (item.Product.ProductImage != null)
-                        {
-                            <img src="@item.Product.ProductImage.FirstOrDefault(x => x.IsMainImage == true).FileName" height="100" />
-                        }
-                        else
-                        {
-                            <img src="~/images/default.png" height="100" />
-                        }
-                    </a>
-                </td>
-                <td>@item.Product.Price.ToString("0.00")</td>
-                <td>
-                    <form method="post" asp-controller="Cart" asp-action="ChangeCartItemQuantity">
-                        <input type="hidden" name="productId" value="@item.Product.Id" />
-                        <input type="number" placeholder="@item.Quantity" name="quantity" value="@item.Quantity" />
-                        <input type="submit" class="btn btn-info btn-sm" value="Change" />
-                    </form>
-                </td>
-                <td>Total:</td>
-                <td>@Model.Sum(x => x.PricePerProduct).ToString("0.00") €</td>
-                <td scope="row">
-                    <form method="post" asp-controller="Cart" asp-action="RemoveFromCart">
-                        <input type="hidden" name="productId" value="@item.Product.Id" />
-                        <input type="submit" class="btn btn-danger btn-sm" value="Remove" />
-                    </form>
-                </td>
-            </tr>
+            <div class="alert alert-danger">@item</div>
         }
-    </tbody>
-</table>
+    </div>
+    <div class="row text-center mt-5">
+        <h2>Personal (billing) info</h2>
+    </div>
+    <div>
+    <form method="post" asp-controller="Home" asp-action="CreateOrder">
+        <input type="hidden" name="UserId" value="user" />
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label for="BillingFirstName" >First name: </label>
+                <input type="text" class="form-control" id="BillingFirstName" name="BillingFirstName" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="BillingLastName">Last name: </label>
+                <input type="text" class="form-control" id="BillingLastName" name="BillingLastName" />
+            </div>
+          
+        </div>
+ 
+        <div class="row mt-2">
+            <div class="form-group col-sm-3">
+                <label for="BillingAddress">Address: </label>
+                <input type="text" class="form-control" id="BillingAddress" name="BillingAddress" />
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="BillingCity">City: </label>
+                <input type="text" class="form-control" id="BillingCity" name="BillingCity" />
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="BillingPostalCode">Postal code: </label>
+                <input type="text" class="form-control" id="BillingPostalCode" name="BillingPostalCode" />
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="BillingCountry">Country: </label>
+                <input type="text" class="form-control" id="BillingCountry" name="BillingCountry" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="form-group col-sm-4">
+                <label for="BillingEmail">E-mail: </label>
+                <input type="text" class="form-control" id="BillingEmail" name="BillingEmail" />
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="BillingPhoneNumber">Phone number: </label>
+                <input type="text" class="form-control" id="BillingPhoneNumber" name="BillingPhoneNumber" />
+            </div>
+        </div>
+            <hr />
+
+            <input type="checkbox" class="mt-3" id="shipSameAsBill" name="shipSameAsBill" onchange="ShipSameAsBill()" />
+            <label for="shipSameAsBill">Billing info same as shipping info</label>
+   
+
+        @*SHIPPING INFO*@
+        <div id="shippingSection">
+            <div class="row text-center">
+                <h2>Shipping information</h2>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="ShippingFirstName">First name: </label>
+                    <input type="text" class="form-control" id="ShippingFirstName" name="ShippingFirstName" />
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="ShippingLastName">Last name: </label>
+                    <input type="text" class="form-control" id="ShippingLastName" name="ShippingLastName" />
+                </div>
+
+            </div>
+            <div class="row mt-2">
+                <div class="form-group col-sm-3">
+                    <label for="ShippingAddress">Address: </label>
+                    <input type="text" class="form-control" id="ShippingAddress" name="ShippingAddress" />
+                </div>
+                <div class="form-group col-sm-3">
+                    <label for="ShippingCity">City: </label>
+                    <input type="text" class="form-control" id="ShippingCity" name="ShippingCity" />
+                </div>
+                <div class="form-group col-sm-3">
+                    <label for="ShippingPostalCode">Postal code: </label>
+                    <input type="text" class="form-control" id="ShippingPostalCode" name="ShippingPostalCode" />
+                </div>
+                <div class="form-group col-sm-3">
+                    <label for="ShippingCountry">Country: </label>
+                    <input type="text" class="form-control" id="ShippingCountry" name="ShippingCountry" />
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="form-group col-sm-4">
+                    <label for="ShippingEmail">E-mail: </label>
+                    <input type="text" class="form-control" id="ShippingEmail" name="ShippingEmail" />
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="ShippingPhoneNumber">Phone number: </label>
+                    <input type="text" class="form-control" id="ShippingPhoneNumber" name="ShippingPhoneNumber" />
+                </div>
+            </div>
+        </div>
+         
+        <div class="row">
+            <label for="message">Message: </label>
+            <textarea class="form-control" for="Message" id="Message" placeholder="Message" name="Message"></textarea>
+        </div>
+            <hr />
+        <div class="row">
+            <input type="submit" value="Complete Order" class="btn btn-lg btn-success" />
+        </div>
+    </form>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        function ShipSameAsBill() {
+            var checkbox = document.getElementById("shipSameAsBill");
+            var shippingContainer = document.getElementById("shippingSection");
+
+            if(checkbox.checked)
+            {
+                shippingContainer.style.display = "none";
+                document.getElementById("ShippingFirstName").value = document.getElementById("BillingFirstName").value;
+                document.getElementById("ShippingLastName").value = document.getElementById("BillingLastName").value;
+                document.getElementById("ShippingEmail").value = document.getElementById("BillingEmail").value;
+                document.getElementById("ShippingPhoneNumber").value = document.getElementById("BillingPhoneNumber").value;
+                document.getElementById("ShippingAddress").value = document.getElementById("BillingAddress").value;
+                document.getElementById("ShippingCountry").value = document.getElementById("BillingCountry").value;
+                document.getElementById("ShippingCity").value = document.getElementById("BillingCity").value;
+                document.getElementById("ShippingPostalCode").value = document.getElementById("BillingPostalCode").value;
+            }else{
+                shippingContainer.style.display = "block";
+            }
+        }
+    </script>
+}

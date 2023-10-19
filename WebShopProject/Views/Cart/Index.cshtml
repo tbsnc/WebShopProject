@@ -21,11 +21,10 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th></th>
                 <th>Product</th>
                 <th></th>
-                <th>Price</th>
                 <th>Quantity</th>
+                <th>Price</th>
                 <th>Total</th>
                 <th></th>
             </tr>
@@ -53,7 +52,7 @@ else
                         </a>
                     </td>
                   
-                    <td>@item.Product.Price.ToString("0.00")</td>
+               
                     <td>
                         <form method="post" asp-controller="Cart" asp-action="ChangeCartItemQuantity">
                             <input type="hidden" name="productId" value="@item.Product.Id"/>
