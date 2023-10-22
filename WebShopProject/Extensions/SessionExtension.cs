@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc.Razor;
+using Newtonsoft.Json;
 
 namespace WebShopProject.Extensions
 {
-    public static class SessionExtension
+    public static class SessionExtension 
     {
         public static void SetObjectAsJson(this ISession session, string key, object value)
         {

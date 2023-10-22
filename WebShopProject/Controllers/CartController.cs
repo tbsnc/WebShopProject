@@ -92,9 +92,19 @@ namespace WebShopProject.Controllers
             {
                 if (cart.Any(x => x.Product.Id == productId))
                 {
-                    cart.FirstOrDefault(x => x.Product.Id == productId).Quantity = quantity;
+                    if (quantity == 0)
+                    {
+                        cart.Remove(cart.Find(x => x.Product.Id == productId));
+                    }
+                    else 
+                    { 
+                        cart.FirstOrDefault(x => x.Product.Id == productId).Quantity = quantity; 
+                    }
+
+                    
                 }
             }
+
             HttpContext.Session.SetObjectAsJson(SessionKeyName, cart);
             return RedirectToAction("Index");
         }

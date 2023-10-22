@@ -92,17 +92,19 @@
         }
    </div>
 </div>
-<div>
-    <form method="post" asp-controller="Cart" asp-action="AddToCart">
-        <input type="hidden" value="@Model.Id" name="productId"/>
-        <input type="submit" value="Add to cart" class="btn btn-lg btn-success"  />
-    </form>
-    <a class="btn btn-lg btn-dark" asp-action="Index">Back to Products</a>
-    @{
-        var cart = httpcontextaccessor.HttpContext.Session.GetObjectFromJson<List<CartItem>>("_cart");
-    if (cart != null)
-    {
-        <a class="btn btn-lg btn-warning" asp-controller="Cart" asp-action="Index">Back to Cart</a>    
-    }
-    }
+<div class="row">
+    <div class="d-inline-flex">
+        <form method="post" asp-controller="Cart" asp-action="AddToCart">
+            <input type="hidden" value="@Model.Id" name="productId"/>
+            <input type="submit" value="Add to cart" class="btn btn-success"  />
+        </form>
+        <a class="btn btn-dark ms-2" asp-action="Index">Back to Products</a>
+        @{
+            var cart = httpcontextaccessor.HttpContext.Session.GetObjectFromJson<List<CartItem>>("_cart");
+        if (cart != null)
+        {
+            <a class="btn btn-warning ms-2" asp-controller="Cart" asp-action="Index">Back to Cart</a>    
+        }
+        }
+    </div>
 </div>

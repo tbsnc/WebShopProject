@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using WebShopProject.Extensions
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -28,12 +29,26 @@
                         </li>*@
 
                         <partial name="_AdminMenuPartial"/>
-                        
-                        <li class="nav-item position-absolute end-0" >
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
-                        </li>
+                        @{
+                         var cart = this.Context.Session.GetObjectFromJson<List<CartItem>>("_cart");
+                         if(cart != null && cart.Count > 0)
+                         {
+                            <li class="nav-item position-absolute end-0">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">
+                                    Cart(@cart.Count)</a>
+                            </li>
+                         }
+                         else
+                         {
+                                <li class="nav-item position-absolute end-0">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">
+                                        Cart
+                                    </a>
+                                </li>
+                            }
+                        }
                     </ul>
-                   
+                  
                 </div>
                 <partial name="_LoginPartial" />
             </div>
