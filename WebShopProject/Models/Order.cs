@@ -14,6 +14,7 @@ namespace WebShopProject.Models
         public string Message { get; set; }
 
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         [Required]
