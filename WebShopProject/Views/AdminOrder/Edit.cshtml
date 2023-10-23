@@ -123,17 +123,20 @@
         <textarea asp-for="Message" class="form-control"></textarea>
         <span asp-validation-for="Message" class="text-danger"></span>
     </div>
-    <div class="form-group mt-3">
-        <label asp-for="Total" class="control-label"></label>
-        <input class="d-inline-flex" asp-for="Total" class="form-control" />
+    <div class="h5 d-inline-flex  mt-2">
+        <label asp-for="Total" class="control-label">Total:</label>
+        <div class="ms-2">
+            @Html.DisplayFor(Model => Model.Total) €
+        </div>
         <span asp-validation-for="Total" class="text-danger"></span>
     </div>
     <div class="form-group mt-3">
         <input type="submit" value="Save" class="btn btn-primary" />
+        <a class="btn btn-dark" asp-action="Index">Back to List</a>
     </div>
 </form>
 
 <div>
-    <a class="btn btn-dark" asp-action="Index">Back to List</a>
+ 
 </div>
 

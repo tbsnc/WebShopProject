@@ -43,7 +43,19 @@ namespace WebShopProject.Controllers.Admin
             {
                 return NotFound();
             }
-
+            order.OrderItems = (from order_item in _context.OrderItem
+                                where order_item.OrderId == order.Id
+                                select new OrderItem()
+                                {
+                                    Id = order_item.Id,
+                                    OrderId = order_item.OrderId,
+                                    ProductId = order_item.ProductId,
+                                    Quantity = order_item.Quantity, 
+                                    Price = order_item.Price,
+                                    ProductName = (from product in _context.Product
+                                                   where product.Id == order_item.ProductId
+                                                   select product.Name).FirstOrDefault()
+                                }).ToList();
             return View(order);
         }
 
