@@ -28,6 +28,9 @@ namespace WebShopProject.Data
         [StringLength(100)]
         public string Country { get; set; }
 
+        [NotMapped]
+        public string UserRole { get; set; }
+
         [ForeignKey("UserId")]
 
         public virtual ICollection<Order> Order { get; set; }

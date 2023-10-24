@@ -1,0 +1,40 @@
+﻿@model IEnumerable<AppUserViewModel>
+
+<h1>List of users</h1>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.Message
+    </div>
+}
+@if(ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.UserName)</th>
+                <th>Role</th>
+                <th>E-mail</th>
+                <th>E-mail verified</th>
+                <th>2FA</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.UserName</td>
+                    <td>@item.Role</td>
+                    <td>@item.Email</td>
+                    <td>@item.EmailConfirmed</td>
+                    <td>@item.TwoFactorAuthActive</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
