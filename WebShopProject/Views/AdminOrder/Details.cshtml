@@ -9,71 +9,71 @@
 <div class="row">
     <h4>Order</h4>
     <hr />
-<div class="row h6">
-    Date created: @Html.DisplayFor(model => model.DateCreated)
-</div>
-<div class="row">
-     <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">@Html.DisplayNameFor(model => model.BillingFirstName)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.BillingFirstName)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.BillingEmail)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.BillingPhoneNumber)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.BillingAddress)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.BillingCity)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.BillingPostalCode)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.BillingCountry)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@Html.DisplayFor(model => model.BillingFirstName)</td>
-                <td>@Html.DisplayFor(model => model.BillingLastName)</td>
-                <td>@Html.DisplayFor(model => model.BillingEmail)</td>
-                <td>@Html.DisplayFor(model => model.BillingPhoneNumber)</td>
-                <td>@Html.DisplayFor(model => model.BillingAddress)</td>
-                <td>@Html.DisplayFor(model => model.BillingCity)</td>
-                <td>@Html.DisplayFor(model => model.BillingPostalCode)</td>
-                <td>@Html.DisplayFor(model => model.BillingCountry)</td>
-            </tr>
-        </tbody>
-    </table>
-    <hr />
+    <div class="row h6">
+        Date created: @Html.DisplayFor(model => model.DateCreated)
+    </div>
+    <div class="row">
+         <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">@Html.DisplayNameFor(model => model.BillingFirstName)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.BillingFirstName)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.BillingEmail)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.BillingPhoneNumber)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.BillingAddress)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.BillingCity)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.BillingPostalCode)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.BillingCountry)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Html.DisplayFor(model => model.BillingFirstName)</td>
+                    <td>@Html.DisplayFor(model => model.BillingLastName)</td>
+                    <td>@Html.DisplayFor(model => model.BillingEmail)</td>
+                    <td>@Html.DisplayFor(model => model.BillingPhoneNumber)</td>
+                    <td>@Html.DisplayFor(model => model.BillingAddress)</td>
+                    <td>@Html.DisplayFor(model => model.BillingCity)</td>
+                    <td>@Html.DisplayFor(model => model.BillingPostalCode)</td>
+                    <td>@Html.DisplayFor(model => model.BillingCountry)</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
 
-     <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">@Html.DisplayNameFor(model => model.ShippingFirstName)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.ShippingFirstName)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.ShippingEmail)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.ShippingPhoneNumber)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.ShippingAddress)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.ShippingCity)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.ShippingPostalCode)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.ShippingCountry)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@Html.DisplayFor(model => model.ShippingFirstName)</td>
-                <td>@Html.DisplayFor(model => model.ShippingLastName)</td>
-                <td>@Html.DisplayFor(model => model.ShippingEmail)</td>
-                <td>@Html.DisplayFor(model => model.ShippingPhoneNumber)</td>
-                <td>@Html.DisplayFor(model => model.ShippingAddress)</td>
-                <td>@Html.DisplayFor(model => model.ShippingCity)</td>
-                <td>@Html.DisplayFor(model => model.ShippingPostalCode)</td>
-                <td>@Html.DisplayFor(model => model.ShippingCountry)</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div class="h5">
-    Total: @Html.DisplayFor(model => model.Total) €
-</div>
-<div class="h5">
-    Message: @Html.DisplayFor(model => model.Message)
-</div>
+         <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">@Html.DisplayNameFor(model => model.ShippingFirstName)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.ShippingFirstName)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.ShippingEmail)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.ShippingPhoneNumber)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.ShippingAddress)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.ShippingCity)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.ShippingPostalCode)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.ShippingCountry)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Html.DisplayFor(model => model.ShippingFirstName)</td>
+                    <td>@Html.DisplayFor(model => model.ShippingLastName)</td>
+                    <td>@Html.DisplayFor(model => model.ShippingEmail)</td>
+                    <td>@Html.DisplayFor(model => model.ShippingPhoneNumber)</td>
+                    <td>@Html.DisplayFor(model => model.ShippingAddress)</td>
+                    <td>@Html.DisplayFor(model => model.ShippingCity)</td>
+                    <td>@Html.DisplayFor(model => model.ShippingPostalCode)</td>
+                    <td>@Html.DisplayFor(model => model.ShippingCountry)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="h5">
+        Total: @Html.DisplayFor(model => model.Total) €
+    </div>
+    <div class="h5">
+        Message: @Html.DisplayFor(model => model.Message)
+    </div>
     <partial name="_OrderItemPartial" model="@Model.OrderItems" />
 </div>
 <div>

@@ -3,17 +3,18 @@
 <h1>List of users</h1>
 @if (ViewBag.Message != null)
 {
-    <div class="alert alert-success">
+    <div class="alert alert-success d-inline-flex">
         @ViewBag.Message
     </div>
 }
 @if(ViewBag.Error != null)
 {
-    <div class="alert alert-danger">
+    <div class="alert alert-danger d-inline-flex">
         @ViewBag.Error
     </div>
 }
 <div class="row">
+   
     <table class="table">
         <thead>
             <tr>
@@ -22,17 +23,23 @@
                 <th>E-mail</th>
                 <th>E-mail verified</th>
                 <th>2FA</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach(var item in Model)
             {
-                <tr>
+                <tr class="align-middle">
                     <td>@item.UserName</td>
                     <td>@item.Role</td>
                     <td>@item.Email</td>
                     <td>@item.EmailConfirmed</td>
                     <td>@item.TwoFactorAuthActive</td>
+                    <td>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.UserId">Edit</a>
+                        <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.UserId">Details</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.UserId">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>

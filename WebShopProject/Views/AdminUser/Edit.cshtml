@@ -1,0 +1,62 @@
+﻿@model WebShopProject.Data.ApplicationUser
+
+<div class="row">
+    <form asp-action="Edit">
+        <div asp-validation-summary="All" class="alert-danger"></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><label asp-for="FirstName" class="form-label"></label></th>
+                    <th><label asp-for="LastName" class="form-label"></label></th>
+                    <th><label asp-for="UserRole" class="form-label"></label></th>
+                    <th><label asp-for="Address" class="form-label"></label></th>
+                    <th><label asp-for="City" class="form-label"></label></th>
+                    <th><label asp-for="PostalCode" class="form-label"></label></th>
+                    <th><label asp-for="Country" class="form-label"></label></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </td>
+                    <td> @*dropdown for changing roles*@
+                        <select class="form-select">
+                            <option selected>@Model.UserRole</option>
+                            @foreach(var item in ViewBag.UserRoles)
+                            {
+                                @if (Model.UserRole != item.Name)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input asp-for="PostalCode" class="form-control" />
+                        <span asp-validation-for="PostalCode" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input asp-for="Country" class="form-control" />
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" class="btn btn-success" value="Save" />
+        <a class="btn btn-dark" asp-action="Index">Back to list</a>
+    </form>
+</div>

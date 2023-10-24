@@ -6,13 +6,34 @@ namespace WebShopProject.Data
     public class FnHelper
     {
         private readonly ApplicationDbContext _context;
-
+        
         public FnHelper(ApplicationDbContext context)
         {
             _context = context;
         }
-        
 
+        /// <summary>
+        /// Returns all items that are related to the order
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public  List<OrderItem> GetOrderItems(int? orderId)
+        {
+            List<OrderItem> orderItems = (from ordItem in _context.OrderItem
+                                          join product in _context.Product
+                                          on ordItem.ProductId equals product.Id
+                                          where ordItem.OrderId == orderId
+                                          select new OrderItem()
+                                          {
+                                              Id = ordItem.Id,
+                                              OrderId = ordItem.OrderId,
+                                              ProductId = ordItem.ProductId,
+                                              Quantity = ordItem.Quantity,
+                                              Price = ordItem.Price,
+                                              ProductName = product.Name
+                                          }).ToList();
+            return orderItems;
+        }
 
         /// <summary>
         /// Saves image localy  
