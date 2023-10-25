@@ -101,12 +101,48 @@ namespace WebShopProject.Controllers.Admin
                 }
 
                 await _userManager.UpdateAsync(u);
-
+                
                 return RedirectToAction("Edit",new { id = user.Id, message = "Changes saved."});
                 
             }
+           
             ViewBag.UserRoles = _roleManager.Roles;
             return View(user);
         }
+
+
+        public IActionResult Delete(string? id)
+        {
+            if (id == null) return RedirectToAction("Index", new { error = "User not found" });
+
+
+            var user = _context.Users.Where(x => x.Id == id).FirstOrDefault();
+
+            if (user == null) return RedirectToAction("Index", new { error = "User not found" });
+            user.UserRole = _fnHelper.GetUserRole(user.Id);
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public IActionResult DeleteConfirmed(string? id)
+        {
+            if (id == null) return RedirectToAction("Index", new { error = "User not found" });
+            
+            var user = _context.Users.Find(id);
+
+            if (user != null)
+            {
+                _userManager.DeleteAsync(user);
+            }else
+            {
+                return RedirectToAction("Index", new { error = "User not found" });
+            }
+
+            return RedirectToAction("Index", new { message = $"User {user.UserName} deleted" }); ;
+
+        }
+
     }
 }

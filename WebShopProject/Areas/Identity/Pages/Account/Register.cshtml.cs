@@ -114,6 +114,7 @@ namespace WebShopProject.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             ModelState.Remove("Input.Order");
+            ModelState.Remove("Input.UserRole");
             if (ModelState.IsValid)
             {
                 var user = CreateUser();

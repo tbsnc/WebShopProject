@@ -1,0 +1,21 @@
+﻿@model WebShopProject.Data.ApplicationUser
+
+
+<h1>Are you sure you want to delete user - @Model.UserName?</h1>
+<div class="mt-5 mb-5">
+    <div class="row h5">
+        First Name: @Model.FirstName
+    </div>
+    <div class="row h5">
+        Last Name: @Model.LastName
+    </div>
+    <div class="row h5">
+        Role: @Model.UserRole
+    </div>
+</div>
+<div>
+    <form asp-action="Delete" asp-route-id="@Model.Id">
+        <input type="submit" value="Delete"  class="btn btn-danger"/>
+        <a class="btn btn-dark" asp-action="Index" >Back</a>
+    </form>
+</div>
