@@ -28,7 +28,7 @@ namespace WebShopProject.Controllers.Admin
         {
             if (_userManager == null || _userManager.Users == null)
             {
-                ViewBag.Error = "No users in DB";
+                ViewBag.Error = "No users in DB.";
                 return View(new AppUserViewModel());
             }
             
@@ -56,7 +56,7 @@ namespace WebShopProject.Controllers.Admin
             ApplicationUser user = _context.Users.Where(x => x.Id == id).FirstOrDefault();
             if (user == null)
             {
-                return RedirectToAction("Index",new { error = "User not found"});
+                return RedirectToAction("Index",new { error = "User not found." });
             }
 
             user.UserRole = _fnHelper.GetUserRole(id);
@@ -113,12 +113,12 @@ namespace WebShopProject.Controllers.Admin
 
         public IActionResult Delete(string? id)
         {
-            if (id == null) return RedirectToAction("Index", new { error = "User not found" });
+            if (id == null) return RedirectToAction("Index", new { error = "User not found." });
 
 
             var user = _context.Users.Where(x => x.Id == id).FirstOrDefault();
 
-            if (user == null) return RedirectToAction("Index", new { error = "User not found" });
+            if (user == null) return RedirectToAction("Index", new { error = "User not found." });
             user.UserRole = _fnHelper.GetUserRole(user.Id);
 
             return View(user);
@@ -128,7 +128,7 @@ namespace WebShopProject.Controllers.Admin
         [ActionName("Delete")]
         public IActionResult DeleteConfirmed(string? id)
         {
-            if (id == null) return RedirectToAction("Index", new { error = "User not found" });
+            if (id == null) return RedirectToAction("Index", new { error = "User not found." });
             
             var user = _context.Users.Find(id);
 
@@ -137,10 +137,10 @@ namespace WebShopProject.Controllers.Admin
                 _userManager.DeleteAsync(user);
             }else
             {
-                return RedirectToAction("Index", new { error = "User not found" });
+                return RedirectToAction("Index", new { error = "User not found." });
             }
 
-            return RedirectToAction("Index", new { message = $"User {user.UserName} deleted" }); ;
+            return RedirectToAction("Index", new { message = $"User {user.UserName} deleted." }); ;
 
         }
 
