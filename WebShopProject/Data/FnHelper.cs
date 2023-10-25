@@ -1,4 +1,5 @@
-﻿using Microsoft.Identity.Client;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Identity.Client;
 using WebShopProject.Extensions;
 using WebShopProject.Models;
 namespace WebShopProject.Data
@@ -6,14 +7,32 @@ namespace WebShopProject.Data
     public class FnHelper
     {
         private readonly ApplicationDbContext _context;
-        
+        private readonly UserManager<ApplicationUser>? _userManager;
+        private readonly RoleManager<IdentityRole>? _roleManager;
+        public FnHelper(ApplicationDbContext context, UserManager<ApplicationUser>? userManager, RoleManager<IdentityRole>? roleManager)
+        {
+            _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
+
         public FnHelper(ApplicationDbContext context)
         {
             _context = context;
         }
 
+        public string GetUserRole(string? userId)
+        {
+            return (from roles in _roleManager.Roles
+                    join userRole in _context.UserRoles
+                    on roles.Id equals userRole.RoleId
+                    where userRole.UserId == userId
+                    select roles.Name).FirstOrDefault();
+        }
+
+
         /// <summary>
-        /// Returns all items that are related to the order
+        /// Returns all items that are related to the order with product names
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns></returns>
@@ -34,6 +53,19 @@ namespace WebShopProject.Data
                                           }).ToList();
             return orderItems;
         }
+
+        /// <summary>
+        /// Returns OrderItem with product name
+        /// </summary>
+        /// <param name="orderItemId"></param>
+        /// <returns></returns>
+        public OrderItem GetOrderItemName(OrderItem orderItem) 
+        {
+            orderItem.ProductName = _context.Product.Where(x => x.Id == orderItem.ProductId).FirstOrDefault().Name;
+            return orderItem;
+        }
+
+
 
         /// <summary>
         /// Saves image localy  

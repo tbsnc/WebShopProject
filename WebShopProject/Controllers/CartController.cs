@@ -23,7 +23,7 @@ namespace WebShopProject.Controllers
             {
                 cart = new List<CartItem>();
             }
-            decimal total = 0;
+       
             foreach (CartItem item in cart)
             {
                 item.Product.ProductImage = _context.ProductImage != null ? _context.ProductImage.Where(x => x.ProductId == item.Product.Id).ToList() : null;

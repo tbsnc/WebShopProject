@@ -154,6 +154,13 @@ namespace WebShopProject.Controllers.Admin
             var order = await _context.Order.FindAsync(id);
             if (order != null)
             {
+
+                foreach (var item in _context.OrderItem.Where(x => x.OrderId == id))
+                {
+                    _context.Product.Find(item.ProductId).Quantity += item.Quantity;
+                    _context.OrderItem.Remove(item);
+                }
+
                 _context.Order.Remove(order);
             }
             

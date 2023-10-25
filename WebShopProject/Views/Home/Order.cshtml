@@ -11,8 +11,8 @@
                     <th>Product</th>
                     <th></th>
                     <th>Quantity</th>
+                    <th></th>
                     <th>Price</th>
-                    <th>Total</th>
                     <th></th>
                 </tr>
             </thead>
@@ -46,7 +46,7 @@
                                 <input type="submit" class="btn btn-info btn-sm" value="Change" />
                             </form>
                         </td>
-                        <td>Total:</td>
+                        <td></td>
                         <td>@item.GetTotalPrice().ToString("0.00") €</td>
                         <td scope="row">
                             <form method="post" asp-controller="Cart" asp-action="RemoveFromCart">
@@ -56,11 +56,17 @@
                         </td>
                     </tr>
                 } 
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Total:</td>
+                    <td>@Model.Sum(x => x.GetTotalPrice()).ToString("0.00") €</td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
-        <div class="row">
-            <span class="border border-warning col-sm-2">Total price: @Model.Sum(x => x.GetTotalPrice()).ToString("0.00") € </span>
-        </div>
+
     </div>
     <div class="row mt-3">
         @foreach(var item in ViewBag.Error)

@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebShopProject.Data
 {
+
     public class ApplicationUser : IdentityUser
     {
         [StringLength(100, MinimumLength = 2)]
@@ -35,6 +36,7 @@ namespace WebShopProject.Data
 
         public virtual ICollection<Order> Order { get; set; }
     }
+    
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

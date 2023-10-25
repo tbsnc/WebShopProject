@@ -6,7 +6,8 @@
 
 <h1>Edit</h1>
 
-<h4>Order</h4>
+<h4>Order no.@Model.Id</h4>
+<h5>Created on @Model.DateCreated.ToString("dd-MM-yyyy")</h5>
 <hr />
 
 <form asp-action="Edit">
@@ -135,6 +136,7 @@
 
     <div class="form-group mt-3">
         <input type="submit" value="Save" class="btn btn-primary" />
+        <a class="btn btn-warning" asp-action="Index" asp-controller="AdminOrderItem" asp-route-orderId="@Model.Id" >Edit order items</a>
         <a class="btn btn-dark" asp-action="Index">Back to List</a>
     </div>
 </form>

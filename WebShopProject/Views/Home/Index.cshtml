@@ -8,27 +8,24 @@
     <div class="alert alert-success d-inline-flex mb-3">
         @ViewBag.Message
     </div>
+    <br />
 }
-<div class="row mb-5">
-    <div class="col-sm-2">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" data-toggle="collapse" data-target="#list" data-bs-toggle="dropdown"
-                    >
-                Filter by categories
-            </button>
-                <div class="dropdown-menu" aria-labelledby="dropDownMenu">
-                @if (ViewBag.Category != null)
+<div class="d-inline-flex mb-2">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" data-toggle="collapse" data-target="#list" data-bs-toggle="dropdown">
+            Filter by categories
+        </button>
+            <div class="dropdown-menu" aria-labelledby="dropDownMenu">
+            @if (ViewBag.Category != null)
+            {
+                @foreach (Category item in ViewBag.Category)
                 {
-                    @foreach (Category item in ViewBag.Category)
-                    {
-                    <a class="dropdown-item" id="@item.Id" name="@item.Name" asp-action="FilterByCategory" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a>
-                    }
+                <a class="dropdown-item" id="@item.Id" name="@item.Name" asp-action="FilterByCategory" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a>
                 }
-                </div>
-        </div>
-        
+            }
+            </div>
     </div>
-    <div class="col-2">
+    <div class="ms-2">
         <a asp-action="Index" class="btn btn-warning">Clear filter</a>
     </div>
 </div>
