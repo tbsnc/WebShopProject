@@ -1,6 +1,6 @@
 ﻿@model WebShopProject.Models.Product
 @using WebShopProject.Extensions
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpcontextaccessor
+
 @{
     ViewData["Title"] = "Product Details";
 }
@@ -100,8 +100,8 @@
         </form>
         <a class="btn btn-dark ms-2" asp-action="Index">Back to Products</a>
         @{
-            var cart = httpcontextaccessor.HttpContext.Session.GetObjectFromJson<List<CartItem>>("_cart");
-        if (cart != null)
+            var cart = this.Context.Session.GetObjectFromJson<List<OrderItem>>("_cart");
+            if (cart != null)
         {
             <a class="btn btn-warning ms-2" asp-controller="Cart" asp-action="Index">Back to Cart</a>    
         }
