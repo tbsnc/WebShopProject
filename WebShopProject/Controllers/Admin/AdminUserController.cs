@@ -135,7 +135,7 @@ namespace WebShopProject.Controllers.Admin
 
         [HttpPost]
         [ActionName("Delete")]
-        public IActionResult DeleteConfirmed(string? id)
+        public async Task<IActionResult> DeleteConfirmed(string? id)
         {
             if (id == null) return RedirectToAction("Index", new { error = "User not found." });
             
@@ -143,7 +143,7 @@ namespace WebShopProject.Controllers.Admin
 
             if (user != null)
             {
-                _userManager.DeleteAsync(user);
+                await _userManager.DeleteAsync(user);
             }else
             {
                 return RedirectToAction("Index", new { error = "User not found." });
