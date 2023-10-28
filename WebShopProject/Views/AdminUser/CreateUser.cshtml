@@ -6,7 +6,10 @@
 <h1 class="text-center">Create new user</h1>
 @if(ViewBag.Error != null)
 {
-    <p class="alert alert-danger">@ViewBag.Error</p>
+    @foreach(var item in ViewBag.Error)
+    {
+        <p class="alert alert-danger">@item</p>
+    }
 }
 <div class="row mt-5">
     <selection>

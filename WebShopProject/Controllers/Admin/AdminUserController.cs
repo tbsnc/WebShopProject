@@ -189,11 +189,31 @@ namespace WebShopProject.Controllers.Admin
                     EmailConfirmed = true, 
                     PhoneNumberConfirmed = true,
                 };
+
+
                 var userExists = await _userManager.FindByEmailAsync(newUser.Email);
                 if (userExists == null)
                 {
-                    await _userManager.CreateAsync(newUser, user.Password);
-                    await _userManager.AddToRoleAsync(newUser, user.UserRole);
+
+                    var result = await _userManager.CreateAsync(newUser, user.Password);
+
+                    if(result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(newUser, user.UserRole);
+                    }
+                    else
+                    { //probably password error
+                        ViewBag.UserRoles = _roleManager.Roles; 
+                        List<string> errorList = new List<string>();
+                        foreach (var item in result.Errors)
+                        {
+                            errorList.Add(item.Description);
+                        }
+                        ViewBag.Error = errorList;
+                        return View(user);
+                    }
+                    
+                    
 
                     return RedirectToAction("Index", new { message = $"User - {user.Email} Created!" });
                 }
