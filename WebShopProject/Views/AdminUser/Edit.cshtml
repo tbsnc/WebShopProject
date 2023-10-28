@@ -1,17 +1,19 @@
 ﻿@model WebShopProject.Data.ApplicationUser
 
-<div class="row alert-danger">
-    @if(ViewBag.Error != null)
-    {
-        <p>@ViewBag.Error</p>
-    }
+
+@if(ViewBag.Error != null)
+{
+<div class="alert alert-danger">
+    <p>@ViewBag.Error</p>
 </div>
-<div class="row alert-success">
-    @if(ViewBag.Message != null)
-    {
-        <p>@ViewBag.Message</p>
-    }
+}
+@if(ViewBag.Message != null)
+{
+<div class="alert alert-success">
+    <p>@ViewBag.Message</p>
 </div>
+}
+
 <div class="row">
     <form asp-action="Edit" method="post" >
         <div asp-validation-summary="All" class="alert-danger"></div>

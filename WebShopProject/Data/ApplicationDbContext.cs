@@ -32,6 +32,14 @@ namespace WebShopProject.Data
         [NotMapped]
         public string UserRole { get; set; }
 
+        [NotMapped]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = null;
+
+        [NotMapped]
+        [DataType(DataType.Password)]
+        public string PasswordConfirmed { get; set; } = null;
+
         [ForeignKey("UserId")]
 
         public virtual ICollection<Order> Order { get; set; }

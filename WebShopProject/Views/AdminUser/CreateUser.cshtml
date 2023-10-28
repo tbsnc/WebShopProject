@@ -1,0 +1,101 @@
+﻿@model WebShopProject.Data.ApplicationUser
+@{
+    ViewData["Title"] = "CreateUser";
+}
+
+<h1 class="text-center">Create new user</h1>
+@if(ViewBag.Error != null)
+{
+    <p class="alert alert-danger">@ViewBag.Error</p>
+}
+<div class="row mt-5">
+    <selection>
+        <form method="post" asp-action="CreateUser">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-floating" >
+                        <input asp-for="FirstName" class="form-control" autocomplete="First Name" aria-required="true" placeholder="First Name" />
+                        <label asp-for="FirstName" class="form-label">First Name:</label>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <input asp-for="LastName" class="form-control" autocomplete="Last Name" aria-required="true" placeholder="Last Name" />
+                        <label asp-for="LastName" class="form-label">LastName:</label>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-floating">
+                        <input asp-for="Email" class="form-control" autocomplete="Email" aria-required="true" placeholder="Email" />
+                        <label asp-for="Email" class="form-label">Email:</label>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <input asp-for="Address" class="form-control" autocomplete="Address" aria-required="true" placeholder="Address" />
+                        <label asp-for="Address" class="form-label">Address:</label>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <input asp-for="City" class="form-control" autocomplete="City" aria-required="true" placeholder="City" />
+                        <label asp-for="City" class="form-label">City:</label>
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <input asp-for="PostalCode" class="form-control" autocomplete="PostalCode" aria-required="true" placeholder="PostalCode" />
+                        <label asp-for="PostalCode" class="form-label">PostalCode:</label>
+                        <span asp-validation-for="PostalCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-floating">
+                        <input asp-for="Country" class="form-control" autocomplete="Country" aria-required="true" placeholder="Country" />
+                        <label asp-for="Country" class="form-label">Country:</label>
+                        <span asp-validation-for="Country" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-3">
+                    <label asp-for="UserRole" class="form-label">User role:</label>
+                    <select asp-for="UserRole" class="form-select flex-fill">
+                        <option selected>Pick Role</option>
+                        @foreach (var item in ViewBag.UserRoles)
+                        {
+                           <option value="@item">@item.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="UserRole" class="text-danger"></span>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-control">
+                        <label asp-for="Password" class="form-label">Password:</label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-control">
+                        <label asp-for="PasswordConfirmed" class="form-label">Password:</label>
+                        <input asp-for="PasswordConfirmed" class="form-control" />
+                        <span asp-validation-for="PasswordConfirmed" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-success mt-3" value="Create User" />
+            <a class="btn btn-dark mt-3" asp-action="Index">Back</a>
+        </form>
+    </selection>
+</div>
+

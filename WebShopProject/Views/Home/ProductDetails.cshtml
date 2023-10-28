@@ -99,7 +99,7 @@
             <input type="submit" value="Add to cart" class="btn btn-success"  />
         </form>
         <a class="btn btn-dark ms-2" asp-action="Index">Back to Products</a>
-        @{
+        @{@*Back to cart only availiable if theres item in cart*@
             var cart = this.Context.Session.GetObjectFromJson<List<OrderItem>>("_cart");
             if (cart != null)
         {

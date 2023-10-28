@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Runtime.CompilerServices;
+using WebShopProject.Constants;
 using WebShopProject.Data;
 using WebShopProject.Models;
 
@@ -15,13 +16,18 @@ namespace WebShopProject.Controllers.Admin
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
         private readonly FnHelper _fnHelper;
-        public AdminUserController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AdminUserController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, 
+            RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager, IUserStore<ApplicationUser> userStore)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
-            _fnHelper = new FnHelper(context, userManager,roleManager);
+            _fnHelper = new FnHelper(context, userManager, roleManager);
+            _signInManager = signInManager;
+            _userStore = userStore;
         }
 
         public IActionResult Index(string? message, string? error)
@@ -79,6 +85,8 @@ namespace WebShopProject.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> Edit(ApplicationUser user)
         {
+            ModelState.Remove("Password");
+            ModelState.Remove("PasswordConfirmed");
             ModelState.Remove("Order");
             if(ModelState.IsValid)
             {
@@ -98,6 +106,7 @@ namespace WebShopProject.Controllers.Admin
                     
                     await _userManager.RemoveFromRolesAsync(u, new List<string> { userRole[0] });
                     await _userManager.AddToRoleAsync(u, user.UserRole);
+                   
                 }
 
                 await _userManager.UpdateAsync(u);
@@ -142,6 +151,65 @@ namespace WebShopProject.Controllers.Admin
 
             return RedirectToAction("Index", new { message = $"User {user.UserName} deleted." }); ;
 
+        }
+
+        public IActionResult CreateUser()
+        {
+            
+            ViewBag.UserRoles = _roleManager.Roles;
+            
+
+            //var user = _signInManager.ge;
+           // user.UserRole = "User";
+            return View();
+        }
+
+        [HttpPost] 
+        public async Task<IActionResult> CreateUser(ApplicationUser user)
+        {
+            ModelState.Remove("Order");
+            if (ModelState.IsValid)
+            {
+                if (user.Password != user.PasswordConfirmed)
+                {
+                    ModelState.AddModelError("Password", "Passwords do not match");
+                    ViewBag.UserRoles = _roleManager.Roles;
+                    return View(user);
+                }
+                var newUser = new ApplicationUser()
+                {
+                    UserName = user.Email,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Address = user.Address,
+                    City = user.City,
+                    PostalCode = user.PostalCode,
+                    Country = user.Country,
+                    EmailConfirmed = true, 
+                    PhoneNumberConfirmed = true,
+                };
+                var userExists = await _userManager.FindByEmailAsync(newUser.Email);
+                if (userExists == null)
+                {
+                    await _userManager.CreateAsync(newUser, user.Password);
+                    await _userManager.AddToRoleAsync(newUser, user.UserRole);
+
+                    return RedirectToAction("Index", new { message = $"User - {user.Email} Created!" });
+                }
+                else
+                {
+                    ViewBag.Error = "Email taken!";
+                    ViewBag.UserRoles = _roleManager.Roles;
+                    return View(user);
+                }
+
+
+
+            }
+
+            ViewBag.UserRoles = _roleManager.Roles;
+            return View(user);
         }
 
     }
