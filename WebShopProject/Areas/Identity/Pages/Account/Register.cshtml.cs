@@ -31,13 +31,15 @@ namespace WebShopProject.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +47,7 @@ namespace WebShopProject.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         /// <summary>
@@ -70,9 +73,11 @@ namespace WebShopProject.Areas.Identity.Pages.Account
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
+        /// 
+        public IList<Country> SelectCountry { get; set; }
         public class InputModel : ApplicationUser
         {
-       
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -105,6 +110,7 @@ namespace WebShopProject.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            SelectCountry = _context.Country.ToList();
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -116,6 +122,7 @@ namespace WebShopProject.Areas.Identity.Pages.Account
             ModelState.Remove("Input.Order"); 
             ModelState.Remove("Input.UserRole"); //used for admin create user
             ModelState.Remove("Input.PasswordConfirmed"); //used for admin create user
+            ModelState.Remove("Input.SelectCountry"); //drop down select for countries
             if (ModelState.IsValid)
             {
                 var user = CreateUser();

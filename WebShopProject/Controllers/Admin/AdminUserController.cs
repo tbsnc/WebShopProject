@@ -75,8 +75,10 @@ namespace WebShopProject.Controllers.Admin
             if (message != null) ViewBag.Message = message;
             var user = _context.Users.Find(id);
             //user.UserRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+ 
             ViewBag.UserRoles = _roleManager.Roles;
-            
+        
+    
             user.UserRole = _fnHelper.GetUserRole(id);
 
             return View(user);

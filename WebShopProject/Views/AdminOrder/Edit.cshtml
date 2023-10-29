@@ -9,7 +9,12 @@
 <h4>Order no.@Model.Id</h4>
 <h5>Created on @Model.DateCreated.ToString("dd-MM-yyyy")</h5>
 <hr />
-
+@if(ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.Message
+    </div>
+}
 <form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
@@ -60,7 +65,13 @@
                         <span asp-validation-for="BillingPostalCode" class="text-danger"></span>
                     </td>
                     <td>
-                        <input asp-for="BillingCountry" class="form-control" />
+                        <select asp-for="BillingCountry" class="form-select">
+                            <option selected>Select country:</option>
+                            @foreach(var item in ViewBag.SelectCountry)
+                            {
+                                <option value="@item.Name">@item.Name</option>
+                            }
+                        </select>
                         <span asp-validation-for="BillingCountry" class="text-danger"></span>
                     </td>
                 </tr>
@@ -112,7 +123,13 @@
                         <span asp-validation-for="ShippingPostalCode" class="text-danger"></span>
                     </td>
                     <td>
-                        <input asp-for="ShippingCountry" class="form-control" />
+                        <select asp-for="ShippingCountry" class="form-select">
+                            <option selected>Select country:</option>
+                            @foreach(var item in ViewBag.SelectCountry)
+                            {
+                                <option value="@item.Name">@item.Name</option>
+                            }
+                        </select>
                         <span asp-validation-for="ShippingCountry" class="text-danger"></span>
                     </td>
                 </tr>

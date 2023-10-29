@@ -136,6 +136,8 @@ namespace WebShopProject.Controllers
 
             ViewBag.Error = error;
 
+            ViewBag.SelectCountry = _context.Country.ToList();
+
             return View(cart);
         }
         [HttpPost]

@@ -107,7 +107,14 @@
             </div>
             <div class="form-group col-sm-3">
                 <label for="BillingCountry">Country: </label>
-                <input type="text" class="form-control" id="BillingCountry" name="BillingCountry" />
+                    <select for="BillingCountry" id="BillingCountry" name="BillingCountry" class="form-select flex-fill">
+                    <option selected>Select country</option>
+                    @foreach(var item in ViewBag.SelectCountry)
+                    {
+                        <option value="@item.Name">@item.Name</option>        
+                    }
+
+                </select>
             </div>
         </div>
         <div class="row mt-2">
@@ -158,7 +165,14 @@
                 </div>
                 <div class="form-group col-sm-3">
                     <label for="ShippingCountry">Country: </label>
-                    <input type="text" class="form-control" id="ShippingCountry" name="ShippingCountry" />
+                        <select for="ShippingCountry" id="ShippingCountry" name="ShippingCountry" class="form-select flex-fill">
+                        <option selected>Select country</option>
+                        @foreach (var item in ViewBag.SelectCountry)
+                        {
+                            <option value="@item.Name">@item.Name</option>
+                        }
+
+                    </select>
                 </div>
             </div>
             <div class="row mt-2">

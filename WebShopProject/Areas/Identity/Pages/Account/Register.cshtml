@@ -40,9 +40,16 @@
                     <label class="ms-2" asp-for="Input.PostalCode">Postal Code</label>
                     <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
                 </div>
-                <div class="form-floating col-sm-3 mb-3">
-                    <input asp-for="Input.Country" class="form-control" placeholder="Country" aria-required="true" />
-                    <label class="ms-2" asp-for="Input.Country">Country</label>
+                <div class="col-sm-3">
+                    
+                    <select asp-for="Input.Country" class="form-select flex-fill">
+                        <option selected>Select country</option>
+                        @foreach(var item in Model.SelectCountry)
+                        {
+                            <option value="@item.Name">@item.Name</option>
+                        }
+
+                    </select>
                     <span asp-validation-for="Input.Country" class="text-danger"></span>
                 </div>
             </div>

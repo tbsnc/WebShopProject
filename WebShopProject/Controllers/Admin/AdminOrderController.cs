@@ -71,8 +71,10 @@ namespace WebShopProject.Controllers.Admin
         }
 
         // GET: AdminOrder/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, string? message)
         {
+            if(message != null) ViewBag.Message = message;
+
             if (id == null || _context.Order == null)
             {
                 return NotFound();
@@ -85,7 +87,8 @@ namespace WebShopProject.Controllers.Admin
             }
             
             order.OrderItems = _fnHelper.GetOrderItems(id);
-            
+
+            ViewBag.SelectCountry = _context.Country.ToList();
             return View(order);
         }
 
@@ -100,7 +103,7 @@ namespace WebShopProject.Controllers.Admin
             {
                 return NotFound();
             }
-
+            ModelState.Remove("OrderItems"); //not editing items here
             if (ModelState.IsValid)
             {
                 try
@@ -119,7 +122,7 @@ namespace WebShopProject.Controllers.Admin
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit",new {message = "Changes saved!"});
             }
             return View(order);
         }
