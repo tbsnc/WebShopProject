@@ -68,7 +68,7 @@ namespace WebShopProject.Data
 
 
         /// <summary>
-        /// Saves image localy  
+        /// Saves image localy and returns image that is ready for saving to DB 
         /// </summary>
         /// <param name="imageFile"></param>
         /// <param name="productId"></param>

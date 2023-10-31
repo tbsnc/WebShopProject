@@ -6,6 +6,12 @@
 <div class="row text-center">
     <h1>Admin product list</h1>
 </div>
+@if(ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.Message
+    </div>
+}
 <table class="table">
     <thead>
         <tr>

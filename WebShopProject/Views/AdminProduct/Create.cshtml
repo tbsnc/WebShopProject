@@ -40,7 +40,7 @@
             </div>
             <div class="form-group mt-2">
                 <label class="control-label">Use default image</label>
-                <input asp-for="UseDefaultImage" type="checkbox" id="chkDefaultImage" onclick="CheckDefault()" />
+                <input type="checkbox" id="chkDefaultImage" name="chkDefaultImage" onclick="CheckDefault()" />
             </div>
 
             <div class="form-group" id="imageUpload" >
@@ -50,7 +50,7 @@
 
             <div class="form-group mt-3">
                 <label class="control-label">Upload without category</label>
-                <input type="checkbox" id="chkCategory" onclick="CheckDefault()" />
+                <input type="checkbox" id="chkCategory" name="chkCategory" onclick="CheckDefault()" />
             </div>
 
             <div class="form-group" id="showCategory">
@@ -58,9 +58,9 @@
                 {
 
                     @*TODO category dropdown*@
-                    
-                    
-                    <select class="form-select" name="SelectedCategory" aria-label="Select category">
+
+
+                    <select class="form-select" name="selectCategoryId" aria-label="Select category">
                         <option selected>Category</option>
                         @foreach(var item in Model.Category)
                         {
@@ -69,6 +69,7 @@
 
                         
                     </select>
+                    <span asp-validation-for="ProductCategory" class="text-danger"></span>
                 }else
                 {
                   <div>No categories in database.</div> 
@@ -77,7 +78,7 @@
 
             <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-success" />
-                <a class="btn btn-dark " asp-action="Index">Back to List</a>
+                <a class="btn btn-dark " asp-action="Index">Back to Products</a>
             </div>
 
         </form>

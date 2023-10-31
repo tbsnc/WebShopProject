@@ -68,6 +68,9 @@
                                 {
                                     <img src="@Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault().FileName" class="img-fluid img-thumbnail" />
 
+                                }else
+                                {
+                                    <img src="~/images/default.png" class="img-fluid img-thumbnail" />
                                 }
                             </div>
                         </div>
@@ -105,7 +108,7 @@
     <div class="d-inline-flex">
         <a class="btn btn-warning" asp-controller="AdminProductImage" asp-action="Index" asp-route-id="@Model.Id">Edit images</a>
 
-        <a class="btn btn-dark ms-2" asp-action="Index">Back to List</a>
+        <a class="btn btn-dark ms-2" asp-action="Index">Back to Products</a>
     </div>
 </div>
 

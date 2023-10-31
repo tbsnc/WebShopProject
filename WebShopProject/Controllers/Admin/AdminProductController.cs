@@ -25,8 +25,9 @@ namespace WebShopProject.Controllers.Admin
         }
 
         // GET: AdminProduct
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? message)
         {
+            if(message != null) ViewBag.Message = message;  
             List<Product> products = _context.Product.ToList();
 
             if (products == null) return View("Index",new List<Product>());
@@ -80,20 +81,32 @@ namespace WebShopProject.Controllers.Admin
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Active,Quantity,Price")] Product product)
+        public async Task<IActionResult> Create(string? chkDefaultImage,string? chkCategory,int? selectCategoryId, [Bind("Id,Name,Description,Active,Quantity,Price")] Product product)
         {
             ModelState.Remove("OrderItem");
-            ModelState.Remove("ProductImage");
-            ModelState.Remove("ProductCategory");
             ModelState.Remove("Category");
            
+            if (chkDefaultImage == "on" || HttpContext.Request.Form.Files.Count > 0) ModelState.Remove("ProductImage");
+            if (chkCategory == "on")
+            {
+                ModelState.Remove("ProductCategory");
+                ModelState.Remove("selectCategoryId");
+            }
+            else if(selectCategoryId == null)
+            {
+                ModelState.Remove("ProductCategory");
+                ModelState.AddModelError("ProductCategory", "Category not selected!");
+            }else
+            { ModelState.Remove("ProductCategory"); }
+
+
 
             if (ModelState.IsValid)
             {
                 _context.Add(product);
 
                 await _context.SaveChangesAsync();
-                //after adding product, product object should have inserted ID value == CONFIRMED
+
                 if (product.Id > 0 && HttpContext.Request.Form.Files.Count > 0)
                 {
                     var imageFile = HttpContext.Request.Form.Files.FirstOrDefault();
@@ -104,30 +117,27 @@ namespace WebShopProject.Controllers.Admin
                     _context.SaveChanges();
                 }
 
-                if (product.Id > 0 && Request.Form["SelectedCategory"].Count > 0)
+                if (product.Id > 0 && selectCategoryId != null)
                 {
-                    if (int.TryParse(Request.Form["SelectedCategory"], out var result))
+                    ProductCategory productCategory = new ProductCategory()
                     {
-                        int categoryId = int.Parse(Request.Form["SelectedCategory"]);
-                        ProductCategory productCategory = new ProductCategory()
-                        {
-                            CategoryId = categoryId,
-                            CategoryName = _context.Category.FirstOrDefault(x => x.Id == categoryId).Name,
-                            ProductId = product.Id,
-                            ProductName = product.Name
+                        CategoryId = (int)selectCategoryId,
+                        CategoryName = _context.Category.FirstOrDefault(x => x.Id == selectCategoryId).Name,
+                        ProductId = product.Id,
+                        ProductName = product.Name
 
-                        };
+                    };
 
-                        _context.Add(productCategory);
-                        _context.SaveChanges();
-                    }
+                    _context.Add(productCategory);
+                    _context.SaveChanges();
                 }
 
 
 
                 return RedirectToAction(nameof(Index));
             }
-            //ovdje ne bi trebalo dolaziti, model state not valid TODO.
+
+            product.Category = _context.Category.ToList();
             return View(product);
         }
     

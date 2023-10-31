@@ -37,8 +37,26 @@ namespace WebShopProject.Controllers
 
 
             foreach (Product product in products)
-            {
-                product.ProductImage = _context.ProductImage != null ? _context.ProductImage.Where(x => x.ProductId == product.Id).ToList() : null;
+            { 
+                if (_context.ProductImage.Any(x => x.ProductId == product.Id))
+                {
+                    product.ProductImage = _context.ProductImage.Where(x => x.ProductId == product.Id).ToList();
+                }else
+                {
+                    product.ProductImage = new List<ProductImage>()
+                    {
+                        new ProductImage()
+                        {
+                            FileName = "/images/default.png",
+                            ProductId = product.Id,
+                            ProductName = product.Name,
+                            IsMainImage = true,
+                            Name = "Default"
+                        }
+                    };
+                }
+
+
                 product.ProductCategory = _context.ProductCategory != null ? _context.ProductCategory.Where(x => x.ProductId == product.Id).ToList() : null;
                 if (product.Description != null && product.Description.Length > 75)
                 {
