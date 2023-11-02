@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Client;
+using System.Security.Cryptography;
 using WebShopProject.Extensions;
 using WebShopProject.Models;
 namespace WebShopProject.Data
@@ -142,6 +143,32 @@ namespace WebShopProject.Data
             return Error;
         }
 
+        /// <summary>
+        /// Shuffles Product List and returns 10 products
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public  List<Product> ShuffleProductList(List<Product> list) 
+        { 
+            Random rnd = new Random();
+            
+            int n = list.Count;
 
+            if (list.Count > 10)
+            {
+                List<Product> randomProducts = new List<Product>();
+
+                while (list.Count > 0)
+                {
+                    int index = rnd.Next(0, list.Count);
+                    randomProducts.Add(list[index]);
+                    list.RemoveAt(index);
+                    if (randomProducts.Count == 10) return randomProducts;
+                }
+            }
+
+
+            return list;
+        }
     }
 }

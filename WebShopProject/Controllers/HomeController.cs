@@ -16,12 +16,14 @@ namespace WebShopProject.Controllers
         private readonly ApplicationDbContext _context;
         private const string SessionKeyName = "_cart";
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly FnHelper _fnHelper;
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
+            _fnHelper = new FnHelper(context);
         }
 
         public IActionResult Index(string? message)
@@ -67,7 +69,7 @@ namespace WebShopProject.Controllers
             }
 
             ViewBag.Category = _context.Category != null ? _context.Category.ToList() : null;
-
+             products = _fnHelper.ShuffleProductList(products);
             return View(products.Count > 0 ? products : new Product());
         }
         public IActionResult FilterByCategory(int id)
@@ -156,6 +158,12 @@ namespace WebShopProject.Controllers
 
             ViewBag.SelectCountry = _context.Country.ToList();
 
+            //auto fill billing info
+            var user = _context.Users.Find(_userManager.GetUserId(User));
+            if (user != null)
+            {
+                ViewBag.User = user;
+            }
             return View(cart);
         }
         [HttpPost]
