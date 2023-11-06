@@ -77,8 +77,8 @@ namespace WebShopProject.Controllers.Admin
             //user.UserRole = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
  
             ViewBag.UserRoles = _roleManager.Roles;
-        
-    
+
+            ViewBag.SelectCountry = _context.Country; 
             user.UserRole = _fnHelper.GetUserRole(id);
 
             return View(user);
@@ -90,7 +90,11 @@ namespace WebShopProject.Controllers.Admin
             ModelState.Remove("Password");
             ModelState.Remove("PasswordConfirmed");
             ModelState.Remove("Order");
-            if(ModelState.IsValid)
+            if (user.Email == null) ModelState.AddModelError("Email", "Email is required.");
+            if (!_fnHelper.IsEmailValid(user.Email)) ModelState.AddModelError("Email", "Email is invalid");
+
+
+            if (ModelState.IsValid)
             {
                 var u = await _userManager.FindByIdAsync(user.Id);
 
@@ -112,11 +116,13 @@ namespace WebShopProject.Controllers.Admin
                 }
 
                 await _userManager.UpdateAsync(u);
-                
+
+               
                 return RedirectToAction("Edit",new { id = user.Id, message = "Changes saved."});
                 
             }
-           
+
+            ViewBag.SelectCountry = _context.Country;
             ViewBag.UserRoles = _roleManager.Roles;
             return View(user);
         }
@@ -159,22 +165,26 @@ namespace WebShopProject.Controllers.Admin
         {
             
             ViewBag.UserRoles = _roleManager.Roles;
-            
-
-            //var user = _signInManager.ge;
-           // user.UserRole = "User";
+            ViewBag.SelectCountry = _context.Country;
             return View();
         }
 
         [HttpPost] 
         public async Task<IActionResult> CreateUser(ApplicationUser user)
         {
+            if (user.UserRole == "Pick Role") ModelState.AddModelError("UserRole", "Role not selected.");
+            if (user.Country == "Select country") ModelState.AddModelError("Country", "Country not selected.");
+            if (user.Email == null) ModelState.AddModelError("Email", "Email is required.");
+            if (!_fnHelper.IsEmailValid(user.Email)) ModelState.AddModelError("Email", "Email invalid.");
+
+
             ModelState.Remove("Order");
             if (ModelState.IsValid)
             {
                 if (user.Password != user.PasswordConfirmed)
                 {
                     ModelState.AddModelError("Password", "Passwords do not match");
+                    ViewBag.SelectCountry = _context.Country;
                     ViewBag.UserRoles = _roleManager.Roles;
                     return View(user);
                 }
@@ -205,6 +215,7 @@ namespace WebShopProject.Controllers.Admin
                     }
                     else
                     { //probably password error
+                        ViewBag.SelectCountry = _context.Country;
                         ViewBag.UserRoles = _roleManager.Roles; 
                         List<string> errorList = new List<string>();
                         foreach (var item in result.Errors)
@@ -222,6 +233,7 @@ namespace WebShopProject.Controllers.Admin
                 else
                 {
                     ViewBag.Error = "Email taken!";
+                    ViewBag.SelectCountry = _context.Country;
                     ViewBag.UserRoles = _roleManager.Roles;
                     return View(user);
                 }
@@ -229,7 +241,7 @@ namespace WebShopProject.Controllers.Admin
 
 
             }
-
+            ViewBag.SelectCountry = _context.Country;
             ViewBag.UserRoles = _roleManager.Roles;
             return View(user);
         }

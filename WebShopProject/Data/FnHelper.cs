@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Client;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using WebShopProject.Extensions;
 using WebShopProject.Models;
@@ -154,7 +155,7 @@ namespace WebShopProject.Data
             
             int n = list.Count;
 
-            if (list.Count > 10)
+            if (list.Count >= 10)
             {
                 List<Product> randomProducts = new List<Product>();
 
@@ -166,9 +167,28 @@ namespace WebShopProject.Data
                     if (randomProducts.Count == 10) return randomProducts;
                 }
             }
-
-
             return list;
         }
+        /// <summary>
+        /// Checks if email form is valid
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public bool IsEmailValid(string? email)
+        {
+            if(email == null) return false;
+
+            if (email.Trim().EndsWith('.')) return false;
+
+            try
+            {
+                var addr = new MailAddress(email);
+                return addr.Address == email.Trim();
+            }
+            catch { return false; }
+
+        }
+
+
     }
 }

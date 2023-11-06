@@ -40,8 +40,6 @@ namespace WebShopProject.Data
         [DataType(DataType.Password)]
         public string PasswordConfirmed { get; set; } = null;
 
-        [NotMapped]
-        public Country SelectCountry { get; set; }
 
         [ForeignKey("UserId")]
 

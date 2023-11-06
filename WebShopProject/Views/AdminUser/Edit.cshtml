@@ -18,60 +18,66 @@
     <form asp-action="Edit" method="post" >
         <div asp-validation-summary="All" class="alert-danger"></div>
         <input type="hidden" asp-for="UserName" />
-        <table class="table">
-            <thead>
-                <tr>
-                    <th><label asp-for="FirstName" class="form-label"></label></th>
-                    <th><label asp-for="LastName" class="form-label"></label></th>
-                   
-                    <th><label asp-for="Address" class="form-label"></label></th>
-                    <th><label asp-for="City" class="form-label"></label></th>
-                    <th><label asp-for="PostalCode" class="form-label"></label></th>
-                    <th><label asp-for="Country" class="form-label"></label></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <input asp-for="FirstName" class="form-control" />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </td>
-                    <td>
-                        <input asp-for="LastName" class="form-control" />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </td>
-                    <td>
-                        <input asp-for="Address" class="form-control form-select" />
-                        <span asp-validation-for="Address" class="text-danger"></span>
-                    </td>
-                    <td>
-                        <input asp-for="City" class="form-control" />
-                        <span asp-validation-for="City" class="text-danger"></span>
-                    </td>
-                    <td>
-                        <input asp-for="PostalCode" class="form-control" />
-                        <span asp-validation-for="PostalCode" class="text-danger"></span>
-                    </td>
-                    <td>
-                        <input asp-for="Country" class="form-control" />
-                        <span asp-validation-for="Country" class="text-danger"></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="col-sm-4">
-            <label asp-for="UserRole" class="form-label">User role:</label>
-            <select asp-for="UserRole" class="form-select flex-fill">
-                <option selected value="@Model.UserRole">@Model.UserRole</option>
-                @foreach (var item in ViewBag.UserRoles)
-                {
-                    @if (Model.UserRole != item.Name)
+        <div class="row">
+            <div class="col-sm-3">
+                <label asp-for="FirstName" class="form-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="col-sm-3">
+                <label asp-for="LastName" class="form-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="col-sm-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-sm-3">
+                <label asp-for="UserRole" class="form-label">User role</label>
+                <select asp-for="UserRole" class="form-select flex-fill">
+                    <option selected value="@Model.UserRole">@Model.UserRole</option>
+                    @foreach (var item in ViewBag.UserRoles)
                     {
-                        <option value="@item">@item</option>
+                        @if (Model.UserRole != item.Name)
+                        {
+                            <option value="@item">@item</option>
+                        }
                     }
-                }
-            </select>
+                </select>
+            </div>
         </div>
+        <div class="row mt-3">
+            <div class="col-sm-3">
+                <label asp-for="Address" class="form-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="col-sm-3">
+                <label asp-for="City" class="form-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="col-sm-3">
+                <label asp-for="PostalCode" class="form-label"></label>
+                <input asp-for="PostalCode" class="form-control" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+            <div class="col-sm-3">
+                <label asp-for="Country" class="form-label"></label>
+                <select asp-for="Country" class="form-select">
+                    <option selected>@Model.Country</option></>
+                    @foreach(var item in ViewBag.SelectCountry)
+                    {
+                        <option value="@item.Name">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+        </div>
+  
+        
         <div class="mt-3">
             <input type="submit" class="btn btn-success" value="Save" />
             <a class="btn btn-dark" asp-action="Index">Back to list</a>
