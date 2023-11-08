@@ -99,7 +99,11 @@ namespace WebShopProject.Controllers.Admin
             }else
             { ModelState.Remove("ProductCategory"); }
 
-
+            if (product.Quantity == 0)
+            {//allow adding product with quantity 0
+            
+                ModelState.Remove("Quantity");
+            }
 
             if (ModelState.IsValid)
             {

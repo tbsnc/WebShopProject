@@ -44,9 +44,7 @@ namespace WebShopProject.Controllers.Admin
                 return View(new List<ProductImage>());
             }
               
-              //return _context.ProductImage != null ? 
-              //            View(await _context.ProductImage.ToListAsync()) :
-              //            Problem("Entity set 'ApplicationDbContext.ProductImage'  is null.");
+             
         }
 
         // GET: AdminProductImage/Details/5
@@ -100,6 +98,8 @@ namespace WebShopProject.Controllers.Admin
                     productImage = await FnHelper.CreateProductImage(imageFile, productImage.ProductId, productImage.IsMainImage);
                 }else
                 {
+                    ModelState.AddModelError("FileName", "Image upload required.");
+                    return View(productImage);
                     return NotFound(); //TODO SMT BETTER MAYBE
                 }
                 

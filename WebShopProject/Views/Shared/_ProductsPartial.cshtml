@@ -14,7 +14,8 @@
                 }
                 else
                 {
-                        <img src="@item.ProductImage.FirstOrDefault(x => x.IsMainImage == true).FileName"  class="img-fluid img-thumbnail mt-3" style="height:15rem" />
+                            <img src="@(item.ProductImage.FirstOrDefault(x => x.IsMainImage == true) != null ? item.ProductImage.FirstOrDefault(x => x.IsMainImage == true).FileName : item.ProductImage.FirstOrDefault().FileName )"
+                                 class="img-fluid img-thumbnail mt-3" style="height:15rem" />
                 }
                 </a>
             </div>

@@ -58,14 +58,33 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <div class="img-thumbnail">
-                                @if (Model.ProductImage != null)
+                                @if (Model.ProductImage != null && Model.ProductImage.Count > 0)
+                                {  //if product has images but no main image
+                                    if (Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault() != null)
+                                    {
+                                        var imgSrc = Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault();
+                                        Model.ProductImage.Remove(imgSrc);
+
+                                        <img src="@imgSrc.FileName" class="img-fluid img-thumbnail" />
+                                    }
+                                    else
+                                    {
+                                        var imgSrc = Model.ProductImage.FirstOrDefault();
+                                        Model.ProductImage.Remove(imgSrc);
+
+                                        <img src="@imgSrc.FileName" class="img-fluid img-thumbnail" />
+                                    }
+
+
+
+
+                                }
+                                else
                                 {
-                                    <img src="@Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault().FileName"  class="img-fluid img-thumbnail"/>
-                                    
+                                    <img src="~/images/default.png" class="img-fluid img-thumbnail"/>       
                                 }
                             </div>
                         </div>
-                        @Model.ProductImage.Remove(Model.ProductImage.Where(x => x.IsMainImage == true).FirstOrDefault());
                         @foreach (var item in Model.ProductImage)
                         {
                             <div class="carousel-item">

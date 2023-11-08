@@ -37,14 +37,15 @@
             </div>
             <div class="dropdown-divider"></div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-success" />
+                <a class="btn btn-dark ms-2" asp-action="Index" asp-route-id="@Model.Id;">Back to List</a>
             </div>
         </form>   
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" asp-route-id="@ViewBag.ProductId;">Back to List</a>
+
 </div>
 
 @section scripts{
