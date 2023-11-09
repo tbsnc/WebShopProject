@@ -189,6 +189,18 @@ namespace WebShopProject.Data
 
         }
 
+        public List<Category> GetProductCategories(int? productId)
+        {
+            return (from category in _context.Category
+                    join productCategory in _context.ProductCategory
+                    on category.Id equals productCategory.CategoryId
+                    where productCategory.ProductId == productId
+                    select new Category()
+                    {
+                        Id = category.Id,
+                        Name = category.Name
+                    }).ToList();
+        }
 
     }
 }

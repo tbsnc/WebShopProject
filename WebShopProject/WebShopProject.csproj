@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\background\" />
     <Folder Include="wwwroot\images\products\10\" />
   </ItemGroup>
 

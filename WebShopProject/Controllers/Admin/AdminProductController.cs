@@ -18,10 +18,11 @@ namespace WebShopProject.Controllers.Admin
     public class AdminProductController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        private readonly FnHelper _fnHelper;
         public AdminProductController(ApplicationDbContext context)
         {
             _context = context;
+            _fnHelper = new FnHelper(context);
         }
 
         // GET: AdminProduct
@@ -166,6 +167,9 @@ namespace WebShopProject.Controllers.Admin
                     product.ProductImage.Add(productImage);
                 }
             }
+
+            product.Category = _fnHelper.GetProductCategories(product.Id);
+
             return View(product);
         }
 
@@ -245,7 +249,88 @@ namespace WebShopProject.Controllers.Admin
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<ActionResult> EditProductCategory(int? id, string? error)
+        {
+            if (id == null) 
+                ViewBag.Error = ("Id is null.");
 
+            if (error != null)
+            {
+                ViewBag.Error = error;
+            }
+
+            var product = _context.Product.Find(id);
+
+
+
+
+            if (product != null)
+            {
+                product.ProductCategory = _context.ProductCategory.Where(x => x.ProductId == id).ToList();
+
+                //add only categories which are not added to product
+                var catId = product.ProductCategory.Where(x => x.ProductId == id).Distinct().ToList();
+                product.Category = new List<Category>();
+                foreach (var item in _context.Category)
+                {
+                    if(!catId.Any(x => x.CategoryId == item.Id))
+                    {
+                        product.Category.Add(item);
+                    }
+                }
+            }
+
+         
+
+            foreach(var item in product.ProductCategory)
+            {
+                item.CategoryName = _context.Category.Where(x => x.Id == item.CategoryId).FirstOrDefault().Name;
+            }
+
+            return View(product);
+        }
+
+   
+        public async Task<ActionResult> DeleteProductCategory(int? productId, int? categoryId)
+        {
+            if (productId == null) return Problem("Product Id is null");
+            if (categoryId == null) return Problem("Category Id is null");
+
+            var productCategory = _context.ProductCategory.Where(x => x.ProductId == productId &&  x.CategoryId == categoryId).FirstOrDefault();
+
+            if(productCategory != null)
+            {
+                _context.ProductCategory.Remove(productCategory);
+                await _context.SaveChangesAsync();
+               return RedirectToAction("EditProductCategory", new { id = productId });
+            }
+            else
+            {
+                return RedirectToAction("Index", new { message = "Product category not found." });
+            }
+
+           
+        }
+
+
+        public async Task<ActionResult> AddProductCategory(int? productId, int? categoryId)
+        {
+            if (productId == null) return Problem("Product Id is null");
+            if (categoryId == null) return Problem("Category Id is null");
+
+            if (_context.ProductCategory.Where(x => x.ProductId == productId && x.CategoryId == categoryId).Count() == 0)
+            {
+                _context.ProductCategory.Add(new ProductCategory() { CategoryId = (int)categoryId, ProductId = (int)productId });
+                await _context.SaveChangesAsync();
+                return RedirectToAction("EditProductCategory", new { id = productId });
+            }
+            else
+            {
+                return RedirectToAction("EditProductCategory", new { id = productId, message = "Category already added to product." });
+            }
+            
+            
+        }
 
         private bool ProductExists(int id)
         {

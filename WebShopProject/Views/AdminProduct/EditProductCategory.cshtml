@@ -1,0 +1,26 @@
+﻿@model Product
+
+
+
+<h4 class="text-center">Product - @Model.Name</h4>
+@if(ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+<div>Current product categories (click on category to remove)</div>
+<hr />
+@foreach(var item in Model.ProductCategory)
+{
+
+    <a class="btn btn-outline-success" asp-action="DeleteProductCategory" asp-route-productId="@Model.Id" asp-route-categoryId="@item.CategoryId">@item.CategoryName</a>
+}
+<hr />
+<div>Available categories (click on category to add)</div>
+<hr />
+@foreach(var item in Model.Category)
+{
+   
+        <a class="btn btn-outline-warning" asp-action="AddProductCategory" asp-route-productId="@Model.Id" asp-route-categoryId="@item.Id">@item.Name</a>
+   
+}
+<hr />
