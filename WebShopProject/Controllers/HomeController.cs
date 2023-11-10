@@ -115,34 +115,9 @@ namespace WebShopProject.Controllers
 
             if (cart == null || cart.Count == 0) { return RedirectToAction("Index", new { message = "Cart is empty!" }); }
 
-            for (int i = 0; i < cart.Count; i++)
-            {
-                Product product = _context.Product.Find(cart[i].Product.Id);
-                if (product == null)
-                {
-                    cart.RemoveAt(i);
-                    i--;
-                    error.Add("Product not found and was removed from cart!");
-                }
-                if (product.Quantity < cart[i].Quantity)
-                {
-                    cart[i].Quantity = product.Quantity;
-                    error.Add($"Quantity of product - \"{product.Name}\" reduced to the amount availiable!");
-                }
-                if (product.Quantity == 0)
-                {
-                    cart.RemoveAt(i);
-                    i--;
-                    error.Add($"Product - \"{product.Name}\" is out of stock and was removed from cart!");
-                }
-                if (!product.Active)
-                {
-                    cart.RemoveAt(i);
-                    i--;
-                    error.Add($"Product - \"{product.Name}\" is not availiable at this time!");
-                }
+            error = _fnHelper.VerifyCartProduct(cart);
 
-            }
+     
 
             HttpContext.Session.SetObjectAsJson(SessionKeyName, cart);
 
@@ -166,6 +141,8 @@ namespace WebShopProject.Controllers
             }
             return View(cart);
         }
+
+
         [HttpPost]
         public IActionResult CreateOrder(Order order, string shipSameAsBill)
         {
@@ -178,34 +155,9 @@ namespace WebShopProject.Controllers
 
             var Error = new List<string>();
 
-            for (int i = 0; i < cart.Count; i++)
-            {
-                Product product = _context.Product.Find(cart[i].Product.Id);
-                if (product == null)
-                {
-                    cart.RemoveAt(i);
-                    i--;
-                    Error.Add("Product not found and was removed from cart!");
-                }
-                if (product.Quantity < cart[i].Quantity)
-                {
-                    cart[i].Quantity = product.Quantity;
-                    Error.Add($"Quantity of product - \"{product.Name}\" reduced to the amount availiable!");
-                }
-                if (product.Quantity == 0)
-                {
-                    cart.RemoveAt(i);
-                    i--;
-                    Error.Add($"Product - \"{product.Name}\" is out of stock and was removed from cart!");
-                }
-                if (!product.Active)
-                {
-                    cart.RemoveAt(i);
-                    i--;
-                    Error.Add($"Product - \"{product.Name}\" is not availiable at this time!");
-                }
+            Error = _fnHelper.VerifyCartProduct(cart);
 
-            }
+
 
             HttpContext.Session.SetObjectAsJson(SessionKeyName, cart);
 

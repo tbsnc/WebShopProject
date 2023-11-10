@@ -105,41 +105,46 @@ namespace WebShopProject.Data
         }
 
         /// <summary>
-        /// Checks if product is ready to be ordered 
+        /// Checks cart items and returns error list if found.
         /// </summary>
         /// <param name="product"></param>
         /// <param name="cartItem"></param>
         /// <returns>Error list</returns>
-        public static List<string> VerifyProduct(Product product, CartItem cartItem, out bool remove)
+        public  List<string> VerifyCartProduct(List<CartItem> cart)
         {
             List<string> Error = new List<string>();
-            remove = false;
             
-            if(product == null) 
+            for (int i = 0; i < cart.Count; i++)
             {
-                Error.Add($"Product - \"{product.Name}\" was not found and was removed from cart");
-                remove = true;
+                Product product = _context.Product.Find(cart[i].Product.Id);
+
+                if (product == null)
+                {
+                    cart.RemoveAt(i);
+                    Error.Add($"Product - {cart[i].Product.Name} - was not found and was removed from cart.");
+                    i--;
+                }
+
+                if (product.Quantity < cart[i].Product.Quantity)
+                {
+                    cart[i].Quantity = product.Quantity;
+                    Error.Add($"Product - {product.Name} - quantity reduced to availiable amount.");
+                }
+
+                if (product.Quantity == 0)
+                {
+                    cart.RemoveAt(i);
+                    Error.Add($"Product - {product.Name} - is out of stock and was removed from cart.");
+                    i--;
+                }
+                if (!product.Active)
+                {
+                    cart.RemoveAt(i);
+                    Error.Add($"Product - {product.Name} - is not availiable at this time.");
+
+                }
             }
 
-            if(product.Quantity < cartItem.Quantity) 
-            {
-                Error.Add("Product ");
-                remove = false;
-            }
-
-            if (product.Quantity == 0)
-            {
-                Error.Add($"Product - \"{product.Name}\" is out of stock and was removed from cart");
-                remove = true;
-            }
-            
-            if (!product.Active)
-            {
-                Error.Add($"Product - \"{product.Name}\" not availiable and was removed from cart");
-                remove = true;
-            }
-            
-            
             
             return Error;
         }
