@@ -31,7 +31,7 @@ username: admin@admin.com
 password: Admin123!
 ```
 
-API for products information
+API for products information.
 ```
 api/ProductAPI
 api/ProductAPI/{productId}
